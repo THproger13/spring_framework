@@ -14,11 +14,24 @@ public class MemberDBRepository {
     @Autowired
     private SqlSessionTemplate sql;
     public void reqdb1(MemberDTO memberDTO) {
-        sql.insert("Login.save", memberDTO);
+        try {
+            sql.insert("Login.save", memberDTO);
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 스택 트레이스 출력
+        }
     }
 
     public List<MemberDTO> findAll() {
-        return sql.selectList("Login.findAll");
+        try {
+            return sql.selectList("Login.findAll");
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 스택 트레이스 출력
+            return null;
+        }
+    }
+
+    public MemberDTO findById(Long id) {
+        return sql.selectOne("Login.findById", id);
     }
 
 }

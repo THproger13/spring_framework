@@ -9,11 +9,11 @@
     <h2>memberdblist.jsp</h2>
     <table>
     <tr>
-        <td>id</td>
+        <td>회원 id</td>
         <td>이메일</td>
         <td>비밀번호</td>
     </tr>
-    <c:forEach items="${memberList}" var="member">
+    <c:forEach items="${memberDTOList}" var="member">
     <tr>
         <td>
             <a href="/find?id=${member.id}">${member.id}</a>

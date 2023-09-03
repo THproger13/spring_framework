@@ -4,7 +4,7 @@
     <title>Title</title>
 </head>
 <body>
-    <h2>demodb1.jsp</h2>
+    <h2>memberdb.jsp</h2>
     <form action="/reqdb1" method="post">
         email: <input type="text" name="email"> <br>
         password: <input type="text" name="password"> <br>
