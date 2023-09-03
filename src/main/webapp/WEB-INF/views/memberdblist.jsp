@@ -16,7 +16,7 @@
     <c:forEach items="${memberDTOList}" var="member">
     <tr>
         <td>
-            <a href="/find?id=${member.id}">${member.id}</a>
+            <a href="<c:url value='/find?id=${member.id}' />">${member.id}</a>
         </td>
         <td>${member.email}</td>
         <td>${member.password}</td>
