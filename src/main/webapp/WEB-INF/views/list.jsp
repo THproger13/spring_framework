@@ -39,6 +39,35 @@
             </tr>
         </c:forEach>
     </table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function update(id) {
+        const newMajor = $(`#major_${id}`).val();
+        const newMobile = $(`#mobile_${id}`).val();
+
+        const encodedMajor = encodeURIComponent(newMajor);
+        const encodedMobile = encodeURIComponent(newMobile);
+
+        $.ajax({
+            url: '/reqdb2',
+            type: 'POST',
+            data: {
+                id: id,
+                studentMajor: encodedMajor,
+                studentMobile: encodedMobile
+            },
+            success: function() {
+                location.reload(); // 화면 갱신
+            }
+        });
+    }
+
+    function deleteStudent(id) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+            location.href = `/delete?id=${id}`;
+        }
+    }
+</script>
 
 <script>
    function update(id) {
