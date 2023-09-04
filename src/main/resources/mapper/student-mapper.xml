@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 반드시 작성! -->
+<mapper namespace="Student">
+    <insert id="save" parameterType="student">
+        insert into student_table(studentNumber, studentName, studentMajor, studentMobile)
+        values(#{studentNumber}, #{studentName}, #{studentMajor}, #{studentMobile})
+    </insert>
+
+    <select id="findAll" resultType="student">
+        select * from student_table
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="student">
+        select * from student_table where id=#{id}
+    </select>
+</mapper>
