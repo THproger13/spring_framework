@@ -8,90 +8,50 @@
 <body>
     <h2>list.jsp</h2>
     <table>
-        <tr>
-            <td>id</td>
-            <td>학번</td>
-            <td>이름</td>
-            <td>학과</td>
-            <td>전화번호</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <c:forEach items="${studentDTOList}" var="student">
-            <tr>
-                <td>
-                    <a href="<c:url value='/find?id=${student.id}' />">${student.id}</a>
-                </td>
-                <td>${student.studentNumber}</td>
-                <td>${student.studentName}</td>
-                <td>
-                    <input type="text" id="major_${student.id}" value="${student.studentMajor}" />
-                </td>
-                <td>
-                    <input type="text" id="mobile_${student.id}" value="${student.studentMobile}" />
-                </td>
-                <td>
-                    <button onclick="update(${student.id})">수정</button>
-                </td>
-                <td>
-                    <button onclick="deleteStudent(${student.id})">삭제</button>
-                </td>
-            </tr>
-        </c:forEach>
+    <tr>
+        <td>id</td>
+        <td>학번</td>
+        <td>이름</td>
+        <td>학과</td>
+        <td>전화번호</td>
+        <td>수정</td>
+        <td>삭제</td>
+    </tr>
+    <c:forEach items="${studentList}" var="student">
+    <tr>
+        <td>
+            <a href="/detail?id=${student.id}">${student.id}</a>
+        </td>
+        <td>${student.studentNumber}</td>
+        <td>${student.studentName}</td>
+        <td>${student.studentMajor}</td>
+        <td>${student.studentMobile}</td>
+        <!-- 수정, 삭제 버튼을 클릭하면 각각 /update, /delete 주소를 요청하면서 id값을
+            StudentController로 보냄(javascript 함수 정의해야 함)
+            수정버튼을 클릭하면 update.jsp화면으로 이동하며, 기존 등록한 학생의 정보가 input 태그에
+            작성되어 있으며, 학번, 이름은 수정이 불가능하고, 학과, 전화번호만 수정할 수 있음.
+            학과, 전화번호를 수정할 값으로 입력 후 버튼을 클릭하면 수정처리를 진행함.
+
+            삭제버튼을 클릭하면 DB에서 해당 학생에 대한 삭제 처리를 진행하고 삭제처리가 끝나면
+            index.jsp를 출력함.
+        -->
+        <td>
+            <button onclick="update_fn('${student.id}')">수정</button>
+        </td>
+        <td>
+            <button onclick="delete_fn('${student.id}')">삭제</button>
+        </td>
+    </tr>
+    </c:forEach>
     </table>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
 <script>
-    function update(id) {
-        const newMajor = $(`#major_${id}`).val();
-        const newMobile = $(`#mobile_${id}`).val();
-
-        const encodedMajor = encodeURIComponent(newMajor);
-        const encodedMobile = encodeURIComponent(newMobile);
-
-        $.ajax({
-            url: '/reqdb2',
-            type: 'POST',
-            data: {
-                id: id,
-                studentMajor: encodedMajor,
-                studentMobile: encodedMobile
-            },
-            success: function() {
-                location.reload(); // 화면 갱신
-            }
-        });
+    const update_fn = (id) => {
+        location.href="/update?id="+id;
     }
 
-    function deleteStudent(id) {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-            location.href = `/delete?id=${id}`;
-        }
+    const delete_fn = (id) => {
+        location.href="/delete?id="+id;
     }
 </script>
-
-<script>
-   function update(id) {
-       const newMajor = document.getElementById(`major_${id}`).value;
-       const newMobile = document.getElementById(`mobile_${id}`).value;
-
-       const encodedMajor = encodeURIComponent(newMajor);
-       const encodedMobile = encodeURIComponent(newMobile);
-
-       const xhr = new XMLHttpRequest();
-       xhr.open("POST", "/reqdb2", true);
-       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-       xhr.onreadystatechange = function() {
-           if (xhr.readyState === 4 && xhr.status === 200) {
-               location.reload(); // 화면 갱신
-           }
-       };
-       xhr.send(`id=${id}&studentMajor=${encodedMajor}&studentMobile=${encodedMobile}`);
-   }
-
-   function deleteStudent(id) {
-       if (confirm("정말로 삭제하시겠습니까?")) {
-           location.href = `/delete?id=${id}`;
-       }
-   }
-
-</script>
+</html>

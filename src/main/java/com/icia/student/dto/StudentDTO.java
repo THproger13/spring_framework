@@ -1,13 +1,16 @@
 package com.icia.student.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class StudentDTO {
     private Long id;
-    private int studentNumber;
+    private String studentNumber;
     private String studentName;
     private String studentMajor;
     private String studentMobile;
-
 }

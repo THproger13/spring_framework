@@ -17,50 +17,58 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/update")
-    public String update() {
-        return "list";
-    }
-
-
-    @PostMapping("/reqdb2")
-    public String reqdb2(@ModelAttribute StudentDTO studentDTO) {
-        try {
-            studentService.reqdb2(studentDTO);
-        } catch (Exception e) {
-            e.printStackTrace(); // 에러 스택 트레이스 출력
-        }
-        return "index";
-    }
-
     @GetMapping("/save")
-    public String list() {
+    public String saveForm() {
         return "save";
     }
 
-
-    @PostMapping("/reqdb1")
-    public String reqdb1(@ModelAttribute StudentDTO studentDTO) {
-        try {
-            studentService.reqdb1(studentDTO);
-        } catch (Exception e) {
-            e.printStackTrace(); // 에러 스택 트레이스 출력
+    @PostMapping("/save")
+    public String save(@ModelAttribute StudentDTO studentDTO) {
+        boolean result = studentService.save(studentDTO);
+        if (result) {
+            System.out.println("학생등록 성공");
+            return "index";
+        } else {
+            System.out.println("학생등록 실패");
+            return "save";
         }
-        return "index";
     }
 
     @GetMapping("/list")
-    public String memberdblist(Model model) {
+    public String findAll(Model model) {
         List<StudentDTO> studentDTOList = studentService.findAll();
-        System.out.println("studentDTOList = " + studentDTOList);
-        model.addAttribute("studentDTOList", studentDTOList);
-        return "list";
+        model.addAttribute("studentList", studentDTOList); // => 화면에 가져갈 데이터
+        return "list"; // => 브라우저에 출력할 jsp 파일 이름
     }
-    @GetMapping("/find")
+
+    @GetMapping("/detail")
     public String findById(@RequestParam("id") Long id, Model model) {
         StudentDTO studentDTO = studentService.findById(id);
-        System.out.println("student = " + studentDTO);
         model.addAttribute("student", studentDTO);
         return "detail";
     }
+
+    @GetMapping("/update")
+    public String updateForm(@RequestParam("id") Long id, Model model) {
+        StudentDTO studentDTO = studentService.findById(id);
+        model.addAttribute("student", studentDTO);
+        return "update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute StudentDTO studentDTO) {
+        studentService.update(studentDTO);
+        // 수정처리 후 redirect 방식으로 /list 주소값 요청
+        return "redirect:/list";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") Long id, Model model) {
+        studentService.delete(id);
+        // redirect 방식 쓰지 않고 직접 리스트 가져와서 list.jsp로 이동
+        List<StudentDTO> studentDTOList = studentService.findAll();
+        model.addAttribute("studentList", studentDTOList);
+        return "list";
+    }
+
 }
