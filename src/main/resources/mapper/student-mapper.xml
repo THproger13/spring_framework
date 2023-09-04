@@ -15,4 +15,9 @@
     <select id="findById" parameterType="Long" resultType="student">
         select * from student_table where id=#{id}
     </select>
+
+    <select id="findAllupdated" parameterType="Long" resultType="student">
+        update student_table set studentMajor = #{studentMajor}, studentMobile = #{studentMobile} where id=#{id}
+    </select>
+
 </mapper>

@@ -10,5 +10,4 @@ public class StudentDTO {
     private String studentMajor;
     private String studentMobile;
 
-
 }

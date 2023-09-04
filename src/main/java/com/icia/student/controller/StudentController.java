@@ -17,6 +17,22 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @GetMapping("/update")
+    public String update() {
+        return "list";
+    }
+
+
+    @PostMapping("/reqdb2")
+    public String reqdb2(@ModelAttribute StudentDTO studentDTO) {
+        try {
+            studentService.reqdb2(studentDTO);
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 스택 트레이스 출력
+        }
+        return "index";
+    }
+
     @GetMapping("/save")
     public String list() {
         return "save";

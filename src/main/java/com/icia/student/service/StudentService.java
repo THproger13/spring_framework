@@ -30,4 +30,12 @@ public class StudentService {
     public StudentDTO findById(Long id) {
         return studentRepository.findById(id);
     }
+
+    public void reqdb2(StudentDTO studentDTO) {
+        try {
+            studentRepository.reqdb2(studentDTO);
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 스택 트레이스 출력
+        };
+    }
 }

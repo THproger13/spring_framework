@@ -34,4 +34,21 @@ public class StudentRepository {
         return sql.selectOne("Student.findById", id);
     }
 
+    public void reqdb2(StudentDTO studentDTO) {
+        try {
+            sql.update("Student.update", studentDTO);
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 스택 트레이스 출력
+        }
+    }
+
+    public List<StudentDTO> findAllupdated() {
+        try {
+            return sql.selectList("Student.findAllupdated");
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 스택 트레이스 출력
+            return null;
+        }
+    }
+
 }
