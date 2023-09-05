@@ -26,6 +26,7 @@
         <td>${student.studentName}</td>
         <td>${student.studentMajor}</td>
         <td>${student.studentMobile}</td>
+
         <!-- 수정, 삭제 버튼을 클릭하면 각각 /update, /delete 주소를 요청하면서 id값을
             StudentController로 보냄(javascript 함수 정의해야 함)
             수정버튼을 클릭하면 update.jsp화면으로 이동하며, 기존 등록한 학생의 정보가 input 태그에
@@ -35,6 +36,7 @@
             삭제버튼을 클릭하면 DB에서 해당 학생에 대한 삭제 처리를 진행하고 삭제처리가 끝나면
             index.jsp를 출력함.
         -->
+
         <td>
             <button onclick="update_fn('${student.id}')">수정</button>
         </td>

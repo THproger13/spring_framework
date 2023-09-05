@@ -59,13 +59,21 @@ public class StudentController {
     public String update(@ModelAttribute StudentDTO studentDTO) {
         studentService.update(studentDTO);
         // 수정처리 후 redirect 방식으로 /list 주소값 요청
+        // redirect를 사용하지 않으면 빈 껍데기만 출력이 된다.
+        //redirect:/list를 사용하면 CONTROLLER의 LIST메서드를 거쳐서 값을 리턴하게 된다.
+        //redirect방식은 브라우저의 주소창에 리다이랙트 한 주소가 http://localhost:8081/list가 출력됨
         return "redirect:/list";
     }
 
     @GetMapping("/delete")
     public String delete(@RequestParam("id") Long id, Model model) {
         studentService.delete(id);
-        // redirect 방식 쓰지 않고 직접 리스트 가져와서 list.jsp로 이동
+
+        // redirect 방식 쓰지 않고 리스트 가져와서 list.jsp로 이동
+        //삭제 처리는 밑의 두 줄을 직접 써줌으로써 리스트 데이터를 직접 가져가는
+        //형식을 쓴다.
+        //dispatch 방식은 브라우저의 주소창에 http://localhost:8081/delete?id=1가 뜬다.
+
         List<StudentDTO> studentDTOList = studentService.findAll();
         model.addAttribute("studentList", studentDTOList);
         return "list";
