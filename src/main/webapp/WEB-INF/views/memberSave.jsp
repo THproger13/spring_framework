@@ -20,6 +20,6 @@
     생년월일: <input type="text" name="memberBirth"> <br>
     전화번호: <input type="text" name="memberMobile"> <br>
     <input type="submit" value="전송">
-</form>
+</form>3
 </body>
 </html>
