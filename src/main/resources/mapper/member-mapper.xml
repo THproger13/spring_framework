@@ -18,10 +18,19 @@
     </select>
 
     <update id="update" parameterType="member">
-        update member_table set(memberEmail=#{memberEmail}, memberPassword=#{memberPassword},
-        memberName=#{memberName}, memberBirth=#{memberBirth}, memberMobile=#{memberMobile})
-        where id=#{id}
+        UPDATE member_table
+        SET memberEmail=#{memberEmail},
+            memberPassword=#{memberPassword},
+            memberName=#{memberName},
+            memberBirth=#{memberBirth},
+            memberMobile=#{memberMobile}
+        WHERE id=#{id}
     </update>
+
+    <select id="getMemberById" parameterType="Long" resultType="member">
+        SELECT * FROM member_table WHERE id = #{id}
+    </select>
+
 
 
 </mapper>

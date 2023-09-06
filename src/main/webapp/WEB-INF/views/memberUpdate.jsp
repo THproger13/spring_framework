@@ -17,6 +17,7 @@
 <h2>회원 정보 수정.jsp</h2>
 
 <form action="/memberUpdate" method="post">
+    <input type="hidden" name="id" value="${member.id}"><br>
     이메일: <input class="form-control" type="text" name="memberEmail" > <br>
     비밀번호: <input class="form-control" type="text" name="memberPassword"> <br>
     이름: <input class="form-control" type="text" name="memberName"> <br>
