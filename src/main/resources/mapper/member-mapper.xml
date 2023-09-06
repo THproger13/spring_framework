@@ -13,4 +13,15 @@
         select * from member_table
     </select>
 
+    <select id="findByEmail" parameterType="String" resultType="member">
+        SELECT * FROM member_table WHERE memberEmail = #{memberEmail}
+    </select>
+
+    <update id="update" parameterType="member">
+        update member_table set(memberEmail=#{memberEmail}, memberPassword=#{memberPassword},
+        memberName=#{memberName}, memberBirth=#{memberBirth}, memberMobile=#{memberMobile})
+        where id=#{id}
+    </update>
+
+
 </mapper>

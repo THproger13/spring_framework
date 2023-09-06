@@ -16,7 +16,16 @@ public class MemberRepository {
         return sql.insert("Member.save", memberDTO);
     }
 
+    public int update(MemberDTO memberDTO) {
+        return sql.update("Member.update", memberDTO);
+    }
+
+
     public List<MemberDTO> list() {
         return sql.selectList("Member.list");
+    }
+
+    public MemberDTO findMemberByEmail(String memberEmail) {
+        return sql.selectOne("Member.findByEmail", memberEmail);
     }
 }

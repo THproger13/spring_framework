@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
 </head>
 <body>
+<%@include file="component/header.jsp"%>
+<%@include file="component/nav.jsp"%>
 <h2>memberSave.jsp</h2>
 <form action="/memberSave" method="post">
     이메일: <input class="form-control" type="text" name="memberEmail"> <br>
@@ -20,6 +22,8 @@
     생년월일: <input type="text" name="memberBirth"> <br>
     전화번호: <input type="text" name="memberMobile"> <br>
     <input type="submit" value="전송">
-</form>3
+</form>
+<%@include file="component/footer.jsp"%>
+
 </body>
 </html>

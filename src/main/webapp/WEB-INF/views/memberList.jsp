@@ -11,11 +11,21 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+    <style>
+        table {
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
-<h2>회원 목록</h2>
-<h3>memberList.jsp</h3>
-<table>
+<%@include file="component/header.jsp" %>
+<%@include file="component/nav.jsp" %>
+<div class="container">
+    <div id="member-list">
+        <table class="table table-bordered">
+
     <tr>
         <td>id</td>
         <td>이메일</td>
@@ -23,26 +33,22 @@
         <td>회원이름</td>
         <td>생년월일</td>
         <td>전화번호</td>
+        <td>조회</td>
+        <td>삭제</td>
+
     </tr>
-    <c:forEach items="${MemberDTOList}" var="member">
+    <c:forEach items="${memberDTOList}" var="member">
         <tr>
             <td>
-                <a href="/memberDetail?id=${member.id}">${member.id}</a>
+                ${member.id}
             </td>
-            <td>${member.memberEmail}</td>
-            <td>${member.studentName}</td>
-            <td>${member.memberPassword}</td>
-            <td>${member.memberName}</td>
-            <td>${member.memberBirth}</td>
-            <td>${member.memberMobile}</td>
-<%--            <td>--%>
-<%--                <button onclick="update_fn('${student.id}')">수정</button>--%>
-<%--            </td>--%>
-<%--            <td>--%>
-<%--                <button onclick="delete_fn('${student.id}')">삭제</button>--%>
-<%--            </td>--%>
+            <td>    ${member.memberEmail}</td>
+            <td>    ${member.memberPassword}</td>
+            <td>    ${member.memberName}</td>
+            <td>    ${member.memberBirth}</td>
+            <td>    ${member.memberMobile}</td>
+
         </tr>
     </c:forEach>
-</table>
 </body>
 </html>

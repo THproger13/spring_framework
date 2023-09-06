@@ -18,8 +18,24 @@ public class MemberService {
         memberRepository.save(memberDTO);
     }
 
+    public void update(MemberDTO memberDTO) {
+        memberRepository.update(memberDTO);
+    }
+
+
     public List<MemberDTO> list() {
         System.out.println(memberRepository.list());
         return memberRepository.list();
     }
+
+    public boolean login(MemberDTO memberDTO) {
+        MemberDTO dbMember = memberRepository.findMemberByEmail(memberDTO.getMemberEmail());
+
+        if (dbMember != null && dbMember.getMemberPassword().equals(memberDTO.getMemberPassword())) {
+            return true; // 로그인 정보 일치
+        }
+        return false; // 로그인 정보 불일치
+    }
+
+
 }

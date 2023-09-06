@@ -12,6 +12,9 @@
         <link rel="stylesheet" href="/resourses/css/main.css">
     </head>
     <body>
+    <%@include file="component/header.jsp"%>
+    <%@include file="component/nav.jsp"%>
+
     <h2>시작페이지</h2>
     <a href="/memberSave">회원 가입 링크이동</a><br>
 
@@ -19,7 +22,11 @@
 
     <a href="/memberLogin">로그인 링크이동</a>
 
+    로그인 이메일 : ${sessionScope.loginEmail}
+    model에 담은 이메일 : ${email} <br>
 
+
+    <%@include file="component/footer.jsp"%>
 
     </body>
     </html>
