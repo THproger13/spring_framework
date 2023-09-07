@@ -52,7 +52,7 @@
       },
       error : function (err) {
         console.log("실패", err);
-        alert(err.responseText);
+        alert("이메일이 중복되었습니다.");
       }
     });
   }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 @Controller
@@ -74,20 +75,26 @@ public class AjaxController {
         List<MemberDTO> memberDTOList = memberService.list();
         return memberDTOList;
     }
-    @PostMapping(value = "/ajax11", produces = "application/text; charset=utf-8")
+    @PostMapping(value = "/ajax11")
     //ResponseEntity의 경우 데이터와 응답 코드를 같이 가지는 클래스다.
     public ResponseEntity ajax11(@ModelAttribute MemberDTO memberDTO){
         try{
             memberService.save(memberDTO);
         }catch (Exception e){
             // 이메일이 중복되는 상황에서 Conflict라는 응답코드를 줌
-            return new ResponseEntity<>(" 이메일이 중복되었습니다!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         List<MemberDTO> memberDTOList = memberService.list();
         //문제가 없다면 회원 리스트 데이터와 200 코드를 응답으로 줌
         return new ResponseEntity<>(memberDTOList, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/check-email")
+    public @ResponseBody String ajax_check_email(@RequestParam("memberEmail") String email) {
+
+        memberService.checkEmail(email);
+        return email;
+    }
 
     }
 

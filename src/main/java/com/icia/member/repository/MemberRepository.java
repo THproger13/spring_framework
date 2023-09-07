@@ -5,6 +5,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Member;
 import java.util.List;
 
 @Repository
@@ -35,5 +36,9 @@ public class MemberRepository {
 
     public MemberDTO findByMemberEmail(String memberEmail) {
         return sql.selectOne("Member.findByEmail",memberEmail);
+    }
+
+    public MemberDTO checkEmail(String memberEmail) {
+        return sql.selectOne("Member.checkEmail", memberEmail);
     }
 }

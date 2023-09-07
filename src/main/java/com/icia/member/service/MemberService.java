@@ -4,6 +4,7 @@ import com.icia.member.dto.MemberDTO;
 import com.icia.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -52,5 +53,9 @@ public class MemberService {
 
     public MemberDTO findByMemberEmail(String memberEmail) {
         return memberRepository.findByMemberEmail(memberEmail);
+    }
+
+    public MemberDTO checkEmail(String memberEmail) {
+        return memberRepository.checkEmail(memberEmail);
     }
 }
