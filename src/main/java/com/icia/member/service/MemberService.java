@@ -49,4 +49,8 @@ public class MemberService {
         System.out.println("id : " + id);
         return memberRepository.getMemberById(id);
     }
+
+    public MemberDTO findByMemberEmail(String memberEmail) {
+        return memberRepository.findByMemberEmail(memberEmail);
+    }
 }

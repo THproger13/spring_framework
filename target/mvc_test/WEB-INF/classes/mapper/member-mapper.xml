@@ -31,6 +31,11 @@
         SELECT * FROM member_table WHERE id = #{id}
     </select>
 
+<!--    <select id="findByEmail" parameterType="String" resultType="member">-->
+<!--        SELECT * FROM member_table WHERE memberEmail = #{memberEmail}-->
+<!--    </select>-->
+
+
 
 
 </mapper>

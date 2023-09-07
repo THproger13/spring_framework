@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/ex">
+  <input type="text" id="ex-id" name="exName" class="ex-class"> <br>
+  <p id="check=result"></p>
+  <p id="check=result2" style="display: none"></p>
+
+  <input type="submit" value="submit" onclick="fun1()"> <br>
+  <input type="button" value="button" onclick="fun2()"> <br>
+  <input type="button" value="체크결과" onclick="fun4()"> <br>
+  <input type="button" value="체크결과2" onclick="fun5()"> <br>
+
+  <button onclick="fun3()">버튼</button>
+
+</form>
+</body>
+<script>
+  const fun4 = () => {
+    const ex = document.getElementById("ex-id").value;<!--.value는 input대그에만 사용가능-->
+    const checkResult =document.getElementById("check-result")
+    //ex갑싱 5보다 큰지 작은지에 따라 chexk-result 구분해서 출력
+    if (ex.length > 5){
+      console.log("5보다 크다");
+      checkResult.style.color = "green";
+      checkResult.innerHTML = "5보다 크다.";
+    }else{
+      console.log("5보다 작다");
+      checkResult.style.color = "red";
+      checkResult.innerHTML = "5보다 작다";
+    }
+  }
+
+  const fun1 = () =>{
+    console.log("fun1");
+  }
+  const fun2 = () =>{
+    console.log("fun2");
+    const ex1 = document.getElementById("ex");
+    console.log(ex1); <!--해당 id를 가진 태그 자체를 가져온다. -->
+    console.log(ex1.value);
+
+    const ex1Value = document.getElementById("ex").value;
+    console.log(ex1Value);
+  }
+  const fun3 = () =>{
+    console.log("fun3");
+  }
+</script>
+</html>
