@@ -59,4 +59,9 @@ public class AjaxViewController {
     public String ajaxView10() {
         return "/ajaxView/ajax10";
     }
+
+    @GetMapping("/ajax-view11")
+    public String ajaxView11() {
+        return "/ajaxView/ajax11";
+    }
 }

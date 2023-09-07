@@ -25,6 +25,7 @@
     로그인 이메일 : ${sessionScope.loginEmail}
     model에 담은 이메일 : ${email} <br>
 
+    <a href="/ajax">ajax 알아보기</a>
 
     <%@include file="component/footer.jsp"%>
 
