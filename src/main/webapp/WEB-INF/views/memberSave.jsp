@@ -32,7 +32,8 @@
 <script>
     $(document).ready(function () {
         $('#memberEmail').keyup = () => { // 이메일 입력 필드에서 키 입력 감지
-            let email = $('#memberEmail').val();
+            const email = document.getElementById("#memberEmail").value;
+            const emailStatus = document.getElementById("emailStatus");
             if (email !== '') {
                 $.ajax({
                     type: 'post',
