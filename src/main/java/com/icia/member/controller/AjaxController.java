@@ -89,12 +89,5 @@ public class AjaxController {
         return new ResponseEntity<>(memberDTOList, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/check-email")
-    public @ResponseBody String ajax_check_email(@RequestParam("memberEmail") String email) {
-
-        memberService.checkEmail(email);
-        return email;
-    }
-
     }
 

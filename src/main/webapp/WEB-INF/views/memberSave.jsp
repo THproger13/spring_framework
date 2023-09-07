@@ -18,7 +18,6 @@
 <form action="/memberSave" method="post">
     이메일: <input class="form-control" type="text" name="memberEmail" id="memberEmail"> <br>
     <span id="emailStatus"></span> <br>
-
     비밀번호: <input type="text" name="memberPassword"> <br>
     이름: <input type="text" name="memberName"> <br>
     생년월일: <input type="text" name="memberBirth"> <br>
@@ -31,26 +30,35 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#memberEmail').keyup = () => { // 이메일 입력 필드에서 키 입력 감지
-            const email = document.getElementById("#memberEmail").value;
-            const emailStatus = document.getElementById("emailStatus");
+        $('#memberEmail').keyup(function () { // 이메일 입력 필드에서 키 입력 감지
+            const email = $('#memberEmail').val();
+            const emailStatus = $('#emailStatus');
             if (email !== '') {
                 $.ajax({
                     type: 'post',
-                    url: '/check-email', // 서버의 이메일 중복 체크 엔드포인트 URL로 변경
+                    url: '/check-email',
                     data: { memberEmail: email },
                     success: function (response) {
-                        if (response != null) {
-                            $('#emailStatus').text('이미 사용 중인 이메일입니다.');
+                        console.log("서버 응답:", response); // 디버깅용 코드
+
+                        if (response === "equals") {
+                            emailStatus.text('이미 사용 중인 이메일입니다.');
+                            emailStatus.css('color', 'red');
                         } else {
-                            $('#emailStatus').text('사용 가능한 이메일입니다.');
+                            emailStatus.text('사용 가능한 이메일입니다.');
+                            emailStatus.css('color', 'green');
                         }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("에러:", error);
                     }
+
                 });
             } else {
-                $('#emailStatus').text('');
+                emailStatus.text('');
             }
         });
     });
 </script>
+
 </html>

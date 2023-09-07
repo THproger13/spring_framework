@@ -38,7 +38,7 @@ public class MemberRepository {
         return sql.selectOne("Member.findByEmail",memberEmail);
     }
 
-    public MemberDTO checkEmail(String memberEmail) {
+    public String checkEmail(String memberEmail) {
         return sql.selectOne("Member.checkEmail", memberEmail);
     }
 }

@@ -55,7 +55,14 @@ public class MemberService {
         return memberRepository.findByMemberEmail(memberEmail);
     }
 
-    public MemberDTO checkEmail(String memberEmail) {
-        return memberRepository.checkEmail(memberEmail);
+    public String checkEmail(String memberEmail) {
+
+        String dbEmail = memberRepository.checkEmail(memberEmail);
+        if(dbEmail != null && dbEmail.equals(memberEmail)){
+            return "equals";
+        }else{
+            return "";
+        }
+
     }
 }
