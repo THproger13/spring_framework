@@ -85,5 +85,17 @@ public class MemberController {
         String isEqualEmails = memberService.checkEmail(memberEmail);
             return isEqualEmails;
     }
+    @PostMapping (value = "/detail-member-by-email")
+        public @ResponseBody MemberDTO ajaxGetMemberByEmail(@RequestParam("memberEmail") String memberEmail) {
+            MemberDTO dbMember = memberService.findByMemberEmail(memberEmail);
+            if(dbMember != null){
+                return dbMember;
+            }else{
+                return null;
+
+            }
+
+    }
+
 
 }

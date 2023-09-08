@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" href="/resources/css/min.css">
+
     <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
 </head>
 <body>
@@ -16,6 +18,8 @@
 <%@include file="component/nav.jsp"%>
 <h2>memberSave.jsp</h2>
 <form action="/memberSave" method="post">
+    <!--onblur를 사용하면 해당 태그선택이 벗어나면 실행이 되는 방식이다. onkeyup의 경우
+     키를 누를 때마다 서버에 요청을 하게 되므로 서버 부담을 줄일거면 onblur를 고려하기-->
     이메일: <input class="form-control" type="text" name="memberEmail" id="memberEmail"> <br>
     <span id="emailStatus"></span> <br>
     비밀번호: <input type="text" name="memberPassword"> <br>
@@ -52,7 +56,6 @@
                     error: function (xhr, status, error) {
                         console.log("에러:", error);
                     }
-
                 });
             } else {
                 emailStatus.text('');
