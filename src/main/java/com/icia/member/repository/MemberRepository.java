@@ -21,7 +21,6 @@ public class MemberRepository {
         return sql.update("Member.update", memberDTO);
     }
 
-
     public List<MemberDTO> list() {
         return sql.selectList("Member.list");
     }

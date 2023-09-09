@@ -20,6 +20,10 @@ public class MemberService {
 
     public int update(MemberDTO memberDTO) {
         // MemberRepository를 사용하여 DB에서 회원 정보를 업데이트합니다.
+        // sql문의 insert문을 repository내부에서 수행할때의 return값은
+        // 수행에 문제가 있을 때는 '0'을 반환하고명령 수행 성공시엔 return값이 0보다 크다.
+        // 따라서 service 클래스 내에서 try-catch문을 사용하여 update성공, 실패 경우의 수를
+        // 나누었다.
         // 업데이트가 성공하면 영향을 받은 행(row)의 수를 반환하고, 실패하면 0을 반환합니다.
 
         try {

@@ -63,7 +63,7 @@ public class MemberController {
         // 필요한 정보를 모델에 담아서 전달
         // 여기서는, 현재 로그인한 회원의 정보를 가져와서 수정 페이지에 표시할 수 있다.
         String memberEmail = (String) session.getAttribute("loginEmail");
-        MemberDTO memberDTO = memberService.findByMemberEmail(memberEmail);// id에 해당하는 회원 정보 조회
+        MemberDTO memberDTO = memberService.findByMemberEmail(memberEmail);// email에 해당하는 회원 정보 조회
         System.out.println(memberDTO);
 
         model.addAttribute("member", memberDTO); // 모델에 회원 정보를 담아서 뷰로 전달
@@ -75,9 +75,9 @@ public class MemberController {
         int rowsUpdated = memberService.update(memberDTO);
 
         if (rowsUpdated > 0) {
-            return "redirect:/memberMain"; // 업데이트 성공 시 memberMain 페이지로 리다이렉트
+            return "memberMain"; // 업데이트 성공 시 memberMain 페이지로 이동
         } else {
-            return "redirect:/memberUpdate"; // 업데이트 실패 시 다시 memberUpdate 페이지로 리다이렉트
+            return "memberUpdate"; // 업데이트 실패 시 다시 memberUpdate 페이지로 이동
         }
     }
     @PostMapping(value = "/check-email")
