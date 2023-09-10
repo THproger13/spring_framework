@@ -1,12 +1,14 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
 
-    <link rel="stylesheet" href="/resources/css/min.css">
-    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/css/main.css">
+<%--    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">--%>
 
     <style>:root {
         /* COLORS */
@@ -20,7 +22,7 @@
 
         /* SIZES */
         --max-width: 900px;
-        --max-height: 650px;
+        --max-height: 700px;
 
         font-size: 16px;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -103,7 +105,7 @@
 
     .overlay {
         background-color: var(--lightblue);
-        background: url("https://cdn.pixabay.com/photo/2017/07/22/22/18/map-2530069_1280.jpg");
+        background: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99086B3C5B9B75C431");
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
@@ -223,23 +225,12 @@
             <input class="input" type="text" placeholder="Email"
                    name="memberEmail" id="memberEmail"> <br>
             <span id="emailStatus"></span> <br>
-            <input class="input" type="text" placeholder="Password" name="memberPassword"> <br>
+            <input class="input" type="password" placeholder="Password" name="memberPassword"> <br>
             <input class="input" type="text" placeholder="Name" name="memberName"> <br>
-            <input class="input" type="text" placeholder="Birthday" name="memberBirth"> <br>
+            <input class="input" type="text" placeholder="Birthday(YY-MM-DD)" name="memberBirth"> <br>
             <input class="input" type="text" placeholder="Mobile" name="memberMobile"> <br>
-            <input class="btn" type="submit" value="Sign Up">
+            <button type="button" class="btn" id="signUp">Sign Up</button>
         </form>
-    </div>
-    <!-- Overlay -->
-    <div class="container__overlay">
-        <div class="overlay">
-            <!--      <div class="overlay__panel overlay&#45;&#45;left">-->
-            <!--        <button class="btn" id="signIn">Sign In</button>-->
-            <!--      </div>-->
-            <div class="overlay__panel overlay--right">
-                <button class="btn" id="signUp">Sign Up</button>
-            </div>
-        </div>
     </div>
 </div>
 <%@include file="component/footer.jsp"%>
@@ -275,6 +266,33 @@
                 emailStatus.text('');
             }
         });
+
+        $('#signUp').click(function () {
+            const email = $('#memberEmail').val();
+            const password = $('input[name="memberPassword"]').val();
+            const name = $('input[name="memberName"]').val();
+            const birth = $('input[name="memberBirth"]').val();
+            const mobile = $('input[name="memberMobile"]').val();
+
+            if (email === '' || password === '' || name === '' || birth === '' || mobile === '') {
+                alert('입력하지 않은 정보가 있습니다!!');
+                if (email === '') {
+                    $('#memberEmail').focus();
+                } else if (password === '') {
+                    $('input[name="memberPassword"]').focus();
+                } else if (name === '') {
+                    $('input[name="memberName"]').focus();
+                } else if (birth === '') {
+                    $('input[name="memberBirth"]').focus();
+                } else if (mobile === '') {
+                    $('input[name="memberMobile"]').focus();
+                }
+            } else {
+                // 모든 필드가 입력되었을 때 폼을 수동으로 제출
+                $('#form1').submit();
+            }
+    });
+
     });
 </script>
 </html>

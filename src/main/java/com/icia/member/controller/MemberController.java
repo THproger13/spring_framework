@@ -24,7 +24,6 @@ public class MemberController {
     public String save(@ModelAttribute MemberDTO memberDTO){
         memberService.save(memberDTO);
         return "index";
-
     }
     @GetMapping("/memberList")
     public String list(Model model){
