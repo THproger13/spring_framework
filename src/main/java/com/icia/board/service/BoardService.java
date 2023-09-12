@@ -15,7 +15,6 @@ import java.util.List;
 public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
-
     /*
     - 파일 있다.
         1. fileAttached=1, board_table에 저장 후 id값 받아오기
@@ -35,8 +34,11 @@ public class BoardService {
             boardDTO.setFileAttached(1);
             BoardDTO savedBoard = boardRepository.save(boardDTO);
             // 파일만 따로 가져오기
+            // boardFile은 boardDTO 객체의 MultipartFile 형식의 속성인
+            // boardFile을 나타냅니다. MultipartFile은 업로드된 파일의 메타 데이터와
+            // 내용을 저장하는데 사용되는 스프링 프레임워크의 클래스이다.
             MultipartFile boardFile = boardDTO.getBoardFile();
-            //파일 이름 가져오기
+            // 원본 파일 이름 가져오기
             String originalFileName = boardFile.getOriginalFilename();
 
             System.out.println("originalFilename = " + originalFileName);
@@ -51,7 +53,7 @@ public class BoardService {
             boardFileDTO.setStoredFileName(storedFileName);
             boardFileDTO.setBoardId(savedBoard.getId());
 
-            //파일 저장용 폴더에 파일 저장 처리
+            //파일 저장용 로컬의 폴더에 파일 저장 처리
             String savePath = "C:\\spring_img\\" + storedFileName;
 
             boardFile.transferTo(new File(savePath));

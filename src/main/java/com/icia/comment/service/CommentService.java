@@ -11,8 +11,8 @@ import java.util.List;
 public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
-    public List<CommentDTO> findById(Long boardId) {
-        List<CommentDTO> dbCommentList = commentRepository.findById(boardId);
-        return dbCommentList;
+    public CommentDTO save(Long boardId) {
+        CommentDTO commentDTO = commentRepository.save(boardId);
+        return commentDTO;
     }
 }

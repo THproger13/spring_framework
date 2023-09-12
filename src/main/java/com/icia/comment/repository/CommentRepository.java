@@ -12,9 +12,8 @@ public class CommentRepository {
     @Autowired
     private SqlSessionTemplate sql;
 
-    public List<CommentDTO> findById(Long boardId) {
-
-        return sql.selectList("Comment.save", boardId);
-
+    public int save(Long boardId) {
+        return sql.insert("Comment.save", boardId);
     }
+
 }

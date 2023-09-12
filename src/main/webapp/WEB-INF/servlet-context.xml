@@ -18,8 +18,17 @@
  /upload/myfile.jpg URL에 대한 요청은 C:spring_img/myfile.jpg
  파일로 연결될 것입니다. 당연히 실제 파일 경로와 프로젝트 구조에 따라 설정값을 조정해야함.-->
 
-    <!-- 파일 접근 경로 지정-->
+    <!-- 파일 접근 경로 지정
+    C:spring_img/ : 파일 시스템 경로이다. 여기서 슬래시(/)가 두 번 연속으로 나타나는 이유는
+    location 속성을 url 주소를 나타내는 형식으로 로컬의 파일 저장 경로를 표현하기 때문이다.
+    URL에서의 슬래시 두 개(//)는 호스트명이나 포트를 나타내는 부분이 없고,
+    파일 경로의 루트 디렉토리를 가리킬 때 사용하는 관례이다. 따라서 다음의 코드는 location 속성값 mapping 속성을
+    통해 컨트롤러의 url로 사용을 하기 위한 코드이다.
+    따라서 C:spring_img/는 C: 드라이브의 루트 디렉토리인 C:\ 안에 있는
+     spring_img 디렉토리를 가리킨다.-->
+
     <resources mapping="/upload/**" location="file:///C:spring_img/" />
+
 
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -29,5 +38,7 @@
 
     <!-- 프로젝트 패키지이름 확인 -->
     <context:component-scan base-package="com.icia.board" />
+    <context:component-scan base-package="com.icia.comment" />
+
 
 </beans:beans>

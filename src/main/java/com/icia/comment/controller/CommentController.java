@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -15,20 +16,13 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-//    @GetMapping("/save")
-//    public String save(@RequestParam Long boardId, Model model) {
-//        List<CommentDTO> commentDTOList = commentService.findById(boardId);
-//        model.addAttribute("commentDTOList", commentDTOList);
-//        return "commentPages/commentSave";
-//    }
-
-    @PostMapping (value="/save")
-    public @ResponseBody List<CommentDTO> save(@ModelAttribute List<CommentDTO> commentDTOList, @RequestParam Long boardId) {
-        List<CommentDTO> commentList = commentService.findById(boardId);
-        if(commentList != null) {
-            return commentList;
-        }else{
-            return null;
+    @PostMapping (value="/comment/save")
+    public @ResponseBody List<CommentDTO> save(@RequestBody CommentDTO commentDTO, @RequestParam Long boardId) {
+        CommentDTO savedComment = commentService.save(commentDTO, boardId);
+        if (savedComment != null) {
+            return commentService.findAllByBoardId(boardId);
+        } else {
+            return new ArrayList<>(); // 댓글이 없는 경우 빈 리스트 반환
         }
 
     }
