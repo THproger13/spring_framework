@@ -12,9 +12,9 @@
     <h2>boardDetail.jsp</h2>
     ${board.id}<br>
     ${board.boardWriter}<br>
-    ${board.boardPass}<br>
     ${board.boardTitle}<br>
     ${board.boardContents}<br>
+    ${board.boardHits}<br>
     <c:if test="${board.fileAttached ==1}">
         <tr>
             <th>image</th>
@@ -23,10 +23,7 @@
                      alt="" width="100" height="100">
             </td>
         </tr>
-    </c:if>
-    ${board.createdAt}<br>
-    ${board.boardHits}<br>
-    ${board.fileAttached}<br>
+    </c:if><br>
 
     <button type="button" class="btn btn-info" onclick="update_fn('${board.id}')">Update</button>
     <button type="button" class="btn btn-danger" onclick="delete_fn('${board.id}')">Delete</button>

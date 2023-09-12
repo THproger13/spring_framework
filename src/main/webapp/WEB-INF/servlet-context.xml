@@ -12,6 +12,12 @@
 
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
     <resources mapping="/resources/**" location="/resources/"/>
+
+<!-- 다음의 파일 접근 경로 지정 설정을 사용하면 /upload/로 시작하는 URL에 대한 요청은
+ C:spring_img/ 디렉토리의 파일로 매핑됩니다. 따라서
+ /upload/myfile.jpg URL에 대한 요청은 C:spring_img/myfile.jpg
+ 파일로 연결될 것입니다. 당연히 실제 파일 경로와 프로젝트 구조에 따라 설정값을 조정해야함.-->
+
     <!-- 파일 접근 경로 지정-->
     <resources mapping="/upload/**" location="file:///C:spring_img/" />
 
