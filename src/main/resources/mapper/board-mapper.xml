@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--아래의 매퍼 태그안에서 특정 sql문을 작성할때는 dml의 종류에 따라 적합한 파라미터를 받아와야만
+ 한다. 이후 mapper.xml의 안에서 받아온 파라미터를 사용할때는 '#{파라미터 이름}'의 형식을 사용해
+ 원하는 파라미터들을 sql문 내부에서 참조해 사용한다.
+-->
+<!-- namespace 반드시 작성! -->
+<mapper namespace="Board">
+    <insert id="save" parameterType="board">
+        insert into board_table(boardWriter, boardPass, boardTitle, boardContents)
+        values (#{boardWriter}, #{boardPass}, #{boardTitle}, #{boardContents})
+    </insert>
+
+    <select id="list" resultType="board">
+        select * from board_table
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="board">
+        select * from board_table where id = #{id}
+    </select>
+
+    <update id="updateHits" parameterType="Long">
+        update board_table set boardHits = boardHits + 1 where id = #{id}
+    </update>
+
+    <update id="update" parameterType="board">
+        update board_table set boardTitle = #{boardTitle}, boardContents = #{boardContents} where id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="Long">
+        delete from board_table where id = #{id}
+    </delete>
+</mapper>
