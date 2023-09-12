@@ -1,6 +1,7 @@
 package com.icia.board.controller;
 
 import com.icia.board.dto.BoardDTO;
+import com.icia.board.dto.BoardFileDTO;
 import com.icia.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,12 @@ public class BoardController {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
+
+        //첨부된 파일이 있다면 파일을 가져옴
+        if(boardDTO.getFileAttached() == 1) {
+            BoardFileDTO boardFileDTO = boardService.findFile(id);
+            model.addAttribute("boardFile", boardFileDTO);
+        }
         if(boardDTO != null) {
             return "boardPages/boardDetail";
         }else{

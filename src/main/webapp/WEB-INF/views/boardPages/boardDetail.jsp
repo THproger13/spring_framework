@@ -1,5 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <html>
@@ -13,6 +15,15 @@
     ${board.boardPass}<br>
     ${board.boardTitle}<br>
     ${board.boardContents}<br>
+    <c:if test="${board.fileAttached ==1}">
+        <tr>
+            <th>image</th>
+            <td>
+                <img src="${pageContext.request.contextPath}/upload/${boardFile.storedFileName}"
+                     alt="" width="100" height="100">
+            </td>
+        </tr>
+    </c:if>
     ${board.createdAt}<br>
     ${board.boardHits}<br>
     ${board.fileAttached}<br>
