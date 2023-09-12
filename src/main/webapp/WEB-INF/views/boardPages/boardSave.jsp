@@ -12,12 +12,13 @@
 </head>
 <body>
 <div class = "container_form">
-    <form action="/board/save" method="post" id = "board-form">
+    <form action="/board/save" method="post" enctype="multipart/form-data" id = "board-form">
         <h2 class="form__title">WriteContent</h2>
         <input type = "text" placeholder="boardWriter" name="boardWriter" ><br>
         <input type = "password" placeholder="boardPass" name="boardPass" ><br>
         <input type = "text" placeholder="boardTitle" name="boardTitle" ><br>
         <textarea placeholder="write your contents here!!" name="boardContents" cols="30" rows="10"></textarea> <br>
+        <input type = "file" name = "boardFile"><br>
         <input type="submit" value="WriteContent" >
     </form>
 </div>
