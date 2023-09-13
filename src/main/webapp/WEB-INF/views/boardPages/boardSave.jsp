@@ -18,7 +18,7 @@
         <input type = "password" placeholder="boardPass" name="boardPass" ><br>
         <input type = "text" placeholder="boardTitle" name="boardTitle" ><br>
         <textarea placeholder="write your contents here!!" name="boardContents" cols="30" rows="10"></textarea> <br>
-        <input type = "file" name = "boardFile"><br>
+        <input type = "file" name = "boardFile" multiple><br>
         <input type="submit" value="WriteContent" >
     </form>
 </div>

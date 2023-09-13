@@ -1,10 +1,9 @@
-package com.icia.comment.controller;
+package com.icia.board.controller;
 
-import com.icia.comment.dto.CommentDTO;
-import com.icia.comment.service.CommentService;
+import com.icia.board.dto.CommentDTO;
+import com.icia.board.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

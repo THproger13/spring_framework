@@ -1,4 +1,4 @@
-package com.icia.comment.dto;
+package com.icia.board.dto;
 
 import lombok.Data;
 

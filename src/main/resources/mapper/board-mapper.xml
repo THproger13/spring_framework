@@ -18,7 +18,7 @@
     </insert>
 
     <select id="list" resultType="board">
-        select * from board_table
+        select * from board_table order by id desc
     </select>
 
     <select id="findById" parameterType="Long" resultType="board">

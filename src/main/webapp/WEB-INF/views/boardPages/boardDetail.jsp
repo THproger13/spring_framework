@@ -19,8 +19,10 @@
         <tr>
             <th>image</th>
             <td>
+                <c:forEach items="${boardFileList}" var="boardFile">
                 <img src="${pageContext.request.contextPath}/upload/${boardFile.storedFileName}"
                      alt="" width="100" height="100">
+                </c:forEach>
             </td>
         </tr>
     </c:if><br>
@@ -29,7 +31,10 @@
     <button type="button" class="btn btn-danger" onclick="delete_fn('${board.id}')">Delete</button><br>
 
     <h2>write Comment</h2>
-    <button type="button" class="btn btn-success" onclick="confirmCommentWrite()">Write Comment</button><br>
+    <button type="button" class="btn btn-success" onclick="startCommentWrite()">Write Comment</button><br>
+
+<!--폼으로 할 필요가 없다. 애초에 submit을 하면 동기 처리인데 ajax를 사용하면 비동기 처리여서 script부분에서
+비동기 통신을 하기 때문에 input 태그만 사용하면 된다. -->
 
     <form id = "comment-write-form" action = "/comment/save" method="post" style="display: none;">
         <input type="hidden" name="boardId" id="boardId" value="${comment.boardId}"><br>
@@ -38,6 +43,7 @@
         <textarea placeholder="write your comment here!!" name="boardContent" id="boardContent" cols="30" rows="10"></textarea> <br>
         <input type = "button" onclick="commentWrite()" id="commentWriteButton">
     </form>
+
     <div class="commentsContainer">
         <h3 id="comments-title">comments</h3>
         <div id="comments-list">
@@ -54,7 +60,7 @@
         location.href="/board/delete?id=" +id;
     }
 
-    const confirmCommentWrite = () => {
+    const startCommentWrite = () => {
         const commentForm = document.getElementById("comment-write-form");
         commentForm.style.display = "block";
     }
@@ -70,7 +76,6 @@
             url: '/comment/save',
             data: {
                 boardId: boardId,
-                cid: cid,
                 commentWriter: commentWriter,
                 commentContents: commentContents
             },

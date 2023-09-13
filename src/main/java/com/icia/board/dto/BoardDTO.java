@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class BoardDTO {
     //DTO에서 string으로 날짜 데이터를 하지 않고 자바의 localdate등을 사용하면 db의 날짜
@@ -19,5 +21,5 @@ public class BoardDTO {
     private String createdAt;
     private int boardHits;
     private int fileAttached;
-    private MultipartFile boardFile;
+    private List<MultipartFile> boardFile;
 }
