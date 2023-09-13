@@ -2,7 +2,9 @@ package com.icia.board.controller;
 
 import com.icia.board.dto.BoardDTO;
 import com.icia.board.dto.BoardFileDTO;
+import com.icia.board.dto.PageDTO;
 import com.icia.board.service.BoardService;
+import com.icia.board.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,9 @@ import java.util.List;
 public class BoardController {
     @Autowired
     private BoardService boardService;
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping("/save")
     public String save() {
         return "boardPages/boardSave";
@@ -23,12 +28,19 @@ public class BoardController {
     @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         boardService.save(boardDTO);
-        return "index";
+        return "redirect:/board/list";
     }
-    @GetMapping("/list")
-    public String list(Model model) {
-        List<BoardDTO> boardDTOList = boardService.list();
+    @GetMapping("/list")//required는 필수 파라미터인ㄷ지 아닌지를 따져서 false이면 파라미터가
+                            //없어도 오류 안뜸
+    public String list(@RequestParam(value = "page", required = false,
+            defaultValue = "1") int page, Model model) {
+
+        List<BoardDTO> boardDTOList = boardService.pagingList(page);
+        System.out.println("boardDTOList = " + boardDTOList);
         model.addAttribute("boardDTOList", boardDTOList);
+
+        PageDTO pageDTO = boardService.pageNumber(page);
+        model.addAttribute("paging", pageDTO);
         if(boardDTOList != null) {
             return "boardPages/boardList";
         }
@@ -36,7 +48,8 @@ public class BoardController {
     }
     //게시글 상세 조회
     @GetMapping("/detail")
-    public String findById(Model model, @RequestParam Long id) {
+    public String findById(Model model, @RequestParam Long id, @RequestParam(value = "page", required = false,
+            defaultValue = "1") int page) {
         //조회수 처리
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);

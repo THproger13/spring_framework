@@ -15,13 +15,15 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping (value="/comment/save")
+    @PostMapping (value="/save")
     public @ResponseBody List<CommentDTO> save(@RequestBody CommentDTO commentDTO, @RequestParam Long boardId) {
-        CommentDTO savedComment = commentService.save(commentDTO, boardId);
-        if (savedComment != null) {
-            return commentService.findAllByBoardId(boardId);
+        commentService.save(boardId);
+        List<CommentDTO> commentDTOList = commentService.findAllByBoardId(boardId);
+        if (commentDTOList != null) {
+            System.out.println( "컨트롤러의 commentDTOList" +  commentDTOList);
+            return commentDTOList;
         } else {
-            return new ArrayList<>(); // 댓글이 없는 경우 빈 리스트 반환
+            return null; // 댓글이 없는 경우 빈 리스트 반환
         }
 
     }

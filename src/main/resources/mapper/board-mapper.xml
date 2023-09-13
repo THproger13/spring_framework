@@ -40,4 +40,11 @@
     <delete id="delete" parameterType="Long">
         delete from board_table where id = #{id}
     </delete>
+
+    <select id="pagingList" parameterType="java.util.HashMap" resultType="board">
+        select * from board_table order by id desc limit ${start}, #{limit}
+    </select>
+    <select id = "count" resultType="Integer">
+        select count(id) from board_table
+    </select>
 </mapper>

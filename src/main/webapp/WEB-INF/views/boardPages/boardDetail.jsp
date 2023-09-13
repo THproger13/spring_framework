@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+
 
 <html>
 <head>
@@ -25,7 +27,7 @@
                 </c:forEach>
             </td>
         </tr>
-    </c:if><br>
+    </c:if>
 
     <button type="button" class="btn btn-info" onclick="update_fn('${board.id}')">Update</button><br>
     <button type="button" class="btn btn-danger" onclick="delete_fn('${board.id}')">Delete</button><br>
@@ -33,16 +35,15 @@
     <h2>write Comment</h2>
     <button type="button" class="btn btn-success" onclick="startCommentWrite()">Write Comment</button><br>
 
-<!--폼으로 할 필요가 없다. 애초에 submit을 하면 동기 처리인데 ajax를 사용하면 비동기 처리여서 script부분에서
-비동기 통신을 하기 때문에 input 태그만 사용하면 된다. -->
+<!--폼으로 할 필요가 없다. 애초에 submit을 하면 동기 처리인데 ajax를 사용하면 비동기 처리여서
+서로 conflict돼서  오류가 난다.  따라서 script부분에서 비동기 통신을 하기 때문에 input 태그만 사용하면 된다. -->
 
-    <form id = "comment-write-form" action = "/comment/save" method="post" style="display: none;">
+    <div id = "comment-write-container" style="display: none;">
         <input type="hidden" name="boardId" id="boardId" value="${comment.boardId}"><br>
-        <input type="hidden" name="cid" id="cid" value="${comment.cid}"><br>
         <input type = "text" name="commentWriter" id="commentWriter"><br>
         <textarea placeholder="write your comment here!!" name="boardContent" id="boardContent" cols="30" rows="10"></textarea> <br>
-        <input type = "button" onclick="commentWrite()" id="commentWriteButton">
-    </form>
+        <input type = "button" onclick="commentWrite()" id="commentWriteButton" value="write comment!!">
+    </div>
 
     <div class="commentsContainer">
         <h3 id="comments-title">comments</h3>
@@ -52,7 +53,11 @@
     </div>
 
     <script>
-    const update_fn = (id) => {
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     commentWrite();
+        // });
+
+        const update_fn = (id) => {
         location.href="/board/update?id=" +id;
     }
 
@@ -61,13 +66,12 @@
     }
 
     const startCommentWrite = () => {
-        const commentForm = document.getElementById("comment-write-form");
-        commentForm.style.display = "block";
+        const commentWriteContainer = document.getElementById("comment-write-container");
+        commentWriteContainer.style.display = "block";
     }
 
     const commentWrite = () => {
         const boardId = $("#boardId").val();
-        const cid = $("#cid").val();
         const commentWriter = $("#commentWriter").val();
         const commentContents = $("#boardContent").val();
 
@@ -105,7 +109,6 @@
             }
         });
     }
-
     </script>
 </body>
 </html>
