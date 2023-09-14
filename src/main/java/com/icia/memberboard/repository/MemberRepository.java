@@ -40,4 +40,15 @@ public class MemberRepository {
         }
         return null;
     }
+
+    public MemberDTO login(MemberDTO memberDTO) {
+        try {
+            return sql.selectOne("Member.login", memberDTO);
+        }catch (Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
+        }
+        return memberDTO;
+        }
 }
