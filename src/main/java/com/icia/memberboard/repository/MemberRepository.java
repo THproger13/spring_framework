@@ -10,17 +10,34 @@ import org.springframework.stereotype.Repository;
 public class MemberRepository {
     @Autowired
     private SqlSessionTemplate sql;
-    public int save(MemberDTO memberDTO) {
+    public MemberDTO save(MemberDTO memberDTO) {
         try {
-            return sql.insert("Member.save", memberDTO);
+            sql.insert("Member.save", memberDTO);
         }catch (Exception e) {
             e.getCause();
             e.printStackTrace();
             System.out.println("e = " + e);
-            return 0;
         }
+        return memberDTO;
     }
     public void saveProfile(MemberProfileDTO memberProfileDTO) {
-        sql.insert("Board.saveProfile", MemberProfileDTO);
+        try {
+            sql.insert("Member.saveProfile", memberProfileDTO);
+        }catch (Exception e){
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
+        }
+    }
+
+    public MemberDTO findByMemberEmail(String memberEmail) {
+        try {
+            return sql.selectOne("Member.findByEmail", memberEmail);
+        }catch (Exception e){
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
+        }
+        return null;
     }
 }

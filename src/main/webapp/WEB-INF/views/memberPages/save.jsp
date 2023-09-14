@@ -2,6 +2,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+
 <html>
 <head>
     <title>Sign Up</title>
@@ -26,7 +29,7 @@
 <script>
 
     const check_email_dup = () => {
-        const inputEmail = document.getElementById("memberEmail").value();
+        const inputEmail = document.getElementById("memberEmail").value;
         const emailResult = document.getElementById("email-dup-check-result");
         $.ajax({
             type : "post",
@@ -34,13 +37,13 @@
             data : {
                 memberEmail : inputEmail
             },
-            success : function () {
+            success : function (res) {
                 emailResult.innerHTML = "appropriate Email!!";
                 emailResult.style.color = "green";
             },
-            error : function () {
+            error : function (res) {
                 emailResult.innerHTML = "already used Email...please input other Email!!";
-                emailResult.style.color = "green";
+                emailResult.style.color = "red";
             }
         });
     }

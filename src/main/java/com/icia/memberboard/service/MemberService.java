@@ -27,19 +27,19 @@ public class MemberService {
                 // 파일만 따로 가져오기
                 MultipartFile memberProfile = memberDTO.getMemberProfile();
                 // 파일 이름 가져오기
-                String originalFilename = memberProfile.getOriginalFilename();
-                System.out.println("originalFilename = " + originalFilename);
+                String originalProfileName = memberProfile.getOriginalFilename();
+                System.out.println("originalProfileName = " + originalProfileName);
                 // 저장용 이름 만들기
                 System.out.println(System.currentTimeMillis());
-                String storedFileName = System.currentTimeMillis() + "-" + originalFilename;
-                System.out.println("storedFileName = " + storedFileName);
+                String storedProfileName = System.currentTimeMillis() + "-" + originalProfileName;
+                System.out.println("storedFileName = " + storedProfileName);
                 // BoardFileDTO 세팅
                 MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-                memberProfileDTO.setOriginalProfileName(originalFilename);
-                memberProfileDTO.setStoredProfileName(storedFileName);
+                memberProfileDTO.setOriginalProfileName(originalProfileName);
+                memberProfileDTO.setStoredProfileName(storedProfileName);
                 memberProfileDTO.setMemberId(savedMember.getMemberId());
                 // 파일 저장용 폴더에 파일 저장 처리
-                String savePath = "C:\\spring_img\\" + storedFileName;
+                String savePath = "C:\\spring_member_img\\" + storedProfileName;
                 memberProfile.transferTo(new File(savePath));
                 // board_file_table 저장 처리
                 memberRepository.saveProfile(memberProfileDTO);
@@ -50,5 +50,8 @@ public class MemberService {
             System.out.println("e = " + e);
         }
 
+    }
+    public MemberDTO findByMemberEmail(String memberEmail) {
+        return memberRepository.findByMemberEmail(memberEmail);
     }
 }

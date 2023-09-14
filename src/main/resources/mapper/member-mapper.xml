@@ -4,14 +4,20 @@
 
 <!-- namespace 반드시 작성! -->
 <mapper namespace="Member">
-    <insert id="save" parameterType="member" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="member" useGeneratedKeys="true" keyProperty="memberId">
         insert into member_table1(memberEmail, memberPassword, memberName, memberMobile, memberProfileAttached)
         values (#{memberEmail}, #{memberPassword}, #{memberName}, #{memberMobile}, #{memberProfileAttached})
     </insert>
+
     <insert id="saveProfile" parameterType="memberProfile">
-        insert into member_profile_table1(originalFileName, storedFileName, memberId)
-        values (#{originalFileName}, #{storedFileName}, #{memberId})
+        insert into member_profile_table1(originalProfileName, storedProfileName, memberId)
+        values (#{originalProfileName}, #{storedProfileName}, #{memberId})
     </insert>
+
+    <select id="findByEmail" parameterType="String" resultType="member">
+        select * from member_table1 where memberEmail=#{memberEmail}
+    </select>
+
 </mapper>
 
 
