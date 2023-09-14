@@ -8,8 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
-
-
 <html>
 <head>
     <title>게시글 목록</title>
@@ -18,12 +16,13 @@
 <div id = "section">
     <!--검색 창-->
     <div class="container" id="search-area">
-        <form action = "/board/search" method="get">
+        <form action = "/board/list" method="get">
             <select name="type">
                 <option value="boardTitle">boardTitle</option>
                 <option value="boardWriter">boardWriter</option>
             </select>
-            <input type="text" >
+            <input type="text" name="q" placeholder="검색어를 입력하세요">
+            <input type="submit" value="검색">
         </form>
 
     </div>

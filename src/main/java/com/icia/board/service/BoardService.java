@@ -104,6 +104,12 @@ public class BoardService {
         pagingParams.put("limit", pageLimit);
         return boardRepository.pagingList(pagingParams);
     }
+    public List<BoardDTO> searchList(String q, String type) {
+        Map<String, String> searchParam = new HashMap<>();
+        searchParam.put("q", q);
+        searchParam.put("type", type);
+        return boardRepository.searchList(searchParam);
+    }
     public PageDTO pageNumber(int page) {
         int pageLimit = 3; // 한페이지에 보여줄 글 갯수
         int blockLimit = 3; // 하단에 보여줄 페이지 번호 갯수
@@ -125,5 +131,9 @@ public class BoardService {
         pageDTO.setEndPage(endPage);
         pageDTO.setStartPage(startPage);
         return pageDTO;
+    }
+    public void sampleData(BoardDTO boardDTO) {
+        boardDTO.setFileAttached(0);
+        boardRepository.save(boardDTO);
     }
 }

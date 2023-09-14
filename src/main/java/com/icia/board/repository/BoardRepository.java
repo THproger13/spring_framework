@@ -50,8 +50,10 @@ public class BoardRepository {
     public List<BoardDTO> pagingList(Map<String, Integer> pagingParams) {
         return sql.selectList("Board.pagingList", pagingParams);
     }
-
     public int boardCount() {
         return sql.selectOne("Board.count");
+    }
+    public List<BoardDTO> searchList(Map<String, String> searchParam) {
+        return sql.selectList("Board.search", searchParam);
     }
 }

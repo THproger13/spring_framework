@@ -20,6 +20,9 @@
 
 <a href="/board/list">글 목록</a><br>
 
+<a href="/board/sample">데이터 붓기</a>
+
+
 
 <%--로그인 이메일 : ${sessionScope.loginEmail}--%>
 <%--model에 담은 이메일 : ${email} <br>--%>
