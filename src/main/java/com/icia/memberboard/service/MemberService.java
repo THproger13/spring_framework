@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -71,5 +72,29 @@ public class MemberService {
     public void sampleData(MemberDTO memberDTO) {
         memberDTO.setMemberProfileAttached(0);
         memberRepository.save(memberDTO);
+    }
+
+    public void delete(String memberEmail) {
+        try{
+            memberRepository.delete(memberEmail);
+        }catch(Exception e) {
+            e.printStackTrace();
+            e.getCause();
+            System.out.println("e = " + e);
+        }
+    }
+
+    public List<MemberDTO> findAll() {
+        try{
+            List<MemberDTO> memberDTOList = memberRepository.findAll();
+            if(memberDTOList != null) {
+                return memberDTOList;
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+            e.getCause();
+            System.out.println("e = " + e);
+        }
+        return null;
     }
 }

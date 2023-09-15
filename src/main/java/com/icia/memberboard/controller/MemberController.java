@@ -5,14 +5,13 @@ import com.icia.memberboard.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.SqlOutParameter;
-import org.springframework.jdbc.core.SqlReturnResultSet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/member")
@@ -37,6 +36,20 @@ public String save() {
     }
     return "index";
 }
+    @GetMapping("/list")
+    public String list(Model model) {
+    try {
+        List<MemberDTO> memberDTOList = memberService.findAll();
+        model.addAttribute("memberDTOList", memberDTOList);
+        return "/memberPages/list";
+    }catch(Exception e) {
+        e.getCause();
+        e.printStackTrace();
+        System.out.println("e = " + e);
+    }
+    return "/memberPages/list";
+
+    }
 
     @PostMapping("/check-email-dup")
         public ResponseEntity duplicateCheck(@RequestParam("memberEmail") String memberEmail) {
@@ -106,7 +119,32 @@ public String save() {
         e.printStackTrace();
         System.out.println("e = " + e);
     }
-        return "redirect:/member/list";
+        return "redirect:/memberPages/list";
+    }
+    
+    @GetMapping("/delete")
+    public String delete() {
+    try {
+        return "/memberPages/list";
+    }catch (Exception e) {
+        e.printStackTrace();
+        e.getCause();
+        System.out.println("e = " + e);
+    }
+    return "/memberPages/list";
+    }
+    @PostMapping("/delete")
+    public String delete(@RequestParam String memberEmail) {
+    try {
+        memberService.delete(memberEmail);
+        return "redirect:/memberPages/list";
+    }catch(Exception e) {
+        e.printStackTrace();
+        e.getCause();
+        System.out.println("e = " + e);
+    }
+        return "redirect:/memberPages/list";
 
     }
+
 }

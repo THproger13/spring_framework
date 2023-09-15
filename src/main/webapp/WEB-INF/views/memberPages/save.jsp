@@ -19,7 +19,7 @@
         <input type = "hidden" id="memberId" name="memberId">
         <input type = "text" onkeyup="check_email_dup()" placeholder="memberEmail" id="memberEmail" name="memberEmail" ><br>
         <p id = "email-dup-check-result" ></p><br>
-        <input type = "password" onkeyup="check_memberPassword()" placeholder="memberPassword" id="memberPassword" name="memberPassword" ><br>
+        <input type = "text" onkeyup="check_memberPassword()" placeholder="memberPassword" id="memberPassword" name="memberPassword" ><br>
         <p id = "memberPassword-check-result" style="display : none;" ></p><br>
         <input type = "text" placeholder="memberName" name="memberName" ><br>
         <input type = "text" onkeyup="check_memberMobile()" placeholder="memberMobile" id="memberMobile" name="memberMobile" ><br>

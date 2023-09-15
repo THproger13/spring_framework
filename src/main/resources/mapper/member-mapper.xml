@@ -14,6 +14,10 @@
         values (#{originalProfileName}, #{storedProfileName}, #{memberId})
     </insert>
 
+    <select id ="findAll" resultType="member">
+        select * from member_table1
+    </select>
+
     <select id="findByEmail" parameterType="String" resultType="member">
         select * from member_table1 where memberEmail=#{memberEmail}
     </select>
@@ -22,6 +26,9 @@
         select * from member_table1 where memberEmail=#{memberEmail} and memberPassword=#{memberPassword}
     </select>
 
+    <delete id = "delete" parameterType="String">
+        delete from member_table1 where memberEmail=#{memberEmail}
+    </delete>
 
 </mapper>
 

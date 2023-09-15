@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class MemberRepository {
     @Autowired
@@ -51,4 +53,27 @@ public class MemberRepository {
         }
         return memberDTO;
         }
+
+    public void delete(String memberEmail) {
+        try {
+            sql.delete("Member.delete", memberEmail);
+        }catch (Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
+        }
+    }
+
+    public List<MemberDTO> findAll() {
+        try {
+            List<MemberDTO> dbMemberlist = sql.selectList("Member.findAll");
+            return dbMemberlist;
+
+        }catch (Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
+        }
+        return null;
+    }
 }
