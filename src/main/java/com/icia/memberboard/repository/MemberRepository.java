@@ -76,4 +76,13 @@ public class MemberRepository {
         }
         return null;
     }
+
+    public MemberDTO findById(Long memberId) {
+        MemberDTO dbmember = sql.selectOne("Member.findById");
+        return dbmember;
+    }
+
+    public MemberProfileDTO findMemberProfile(Long memberId) {
+        return sql.selectOne("Member.findMemberProfile");
+    }
 }

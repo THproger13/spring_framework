@@ -22,6 +22,14 @@
         select * from member_table1 where memberEmail=#{memberEmail}
     </select>
 
+    <select id = "findById" parameterType="Long" resultType="member">
+        select * from member_table1 where memberId=#{memberId}
+    </select>
+
+    <select id="findMemberProfile" parameterType="Long" resultType="memberProfile">
+        select * from member_profile_table where memberId=#{id}
+    </select>
+
     <select id="login" parameterType="member" resultType="member">
         select * from member_table1 where memberEmail=#{memberEmail} and memberPassword=#{memberPassword}
     </select>

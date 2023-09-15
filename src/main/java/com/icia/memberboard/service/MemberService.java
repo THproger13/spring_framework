@@ -97,4 +97,17 @@ public class MemberService {
         }
         return null;
     }
+
+    public MemberDTO findById(Long memberId) {
+        MemberDTO memberDTO = memberRepository.findById(memberId);
+        return memberDTO;
+    }
+
+    public void deleteMemberProfile(Long memberId) {
+        MemberProfileDTO dto = memberRepository.findMemberProfile(memberId);
+        File file = new File("C:\\spring_member_img\\" + MemberProfileDTO.getStoredProfileName());
+        if(file.exists()){
+            file.delete();
+        }
+    }
 }

@@ -124,7 +124,11 @@ public String save() {
     
     @GetMapping("/delete")
     public String delete(@RequestParam("memberId") Long memberId) {
-        memberService.delete(memberId);
+    MemberDTO memberDTO = memberService.findById(memberId);
+    if(memberDTO.getMemberProfileAttached() == 1){
+        memberService.deleteMemberProfile(memberId);
+    }
+    memberService.delete(memberId);
         return "redirect:/memberPages/list";
     }
 
