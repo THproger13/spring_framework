@@ -8,25 +8,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Board Project</title>
+    <title>Member Board Project</title>
     <%--    <link rel="stylesheet" href="/resourses/css/main.css">--%>
 </head>
 <body>
-<%--<%@include file="component/header.jsp"%>--%>
-<%--<%@include file="component/nav.jsp"%>--%>
+<%@include file="component/header.jsp"%>
+<%@include file="component/nav.jsp"%>
 
 <h2>HomePage</h2>
-<a href="/member/save">Sign Up</a><br>
 
-<a href="/member/login">Sign In</a><br>
+<%--<a href="/member/save">Sign Up</a><br>--%>
 
-<a href="/board/list">Contents List</a>
+<%--<a href="/member/login">Sign In</a><br>--%>
 
-로그인 이메일 : ${sessionScope.loginEmail}
-model에 담은 이메일 : ${email} <br>
+<%--<a href="/board/list">Contents List</a><br>--%>
 
+<%--<a href="/member/sample">Create Sampledata</a>--%>
 
-<%--<%@include file="component/footer.jsp"%>--%>
+<%--로그인 이메일 : ${sessionScope.loginEmail}--%>
+<%--model에 담은 이메일 : ${email} <br>--%>
+
+<%@include file="component/footer.jsp"%>
 
 </body>
 </html>

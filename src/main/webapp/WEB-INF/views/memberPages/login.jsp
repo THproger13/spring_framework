@@ -11,11 +11,15 @@
     <title>Sign In</title>
 </head>
 <body>
+<%@include file="component/header.jsp"%>
+<%@include file="component/nav.jsp"%>
 <form action="/member/login" method="post" id = "board-form">
     <h2 class="form__title">Sign In</h2>
     <input type = "text" placeholder="input memberEmail!!" id="memberEmail" name="memberEmail" ><br>
     <input type = "password" placeholder="input memberPassword!!" id="memberPassword" name="memberPassword" ><br>
     <input type="submit" value="Sign In" >
 </form>
+<%@include file="component/footer.jsp"%>
+
 </body>
 </html>

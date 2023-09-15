@@ -10,6 +10,9 @@
     <title>Sign Up</title>
 </head>
 <body>
+<%@include file="component/header.jsp"%>
+<%@include file="component/nav.jsp"%>
+
 <div class = "container_form">
     <form action="/member/save" method="post" enctype="multipart/form-data" id = "board-form">
         <h2 class="form__title">Sign Up</h2>
@@ -25,6 +28,9 @@
         <input type="submit" value="Sign Up" >
     </form>
 </div>
+
+<%@include file="component/footer.jsp"%>
+
 </body>
 <script>
 

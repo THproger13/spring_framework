@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/member")
+
 public class MemberController {
 @Autowired
     private MemberService memberService;
@@ -33,7 +34,6 @@ public String save() {
         e.getCause();
         e.printStackTrace();
         System.out.println("e = " + e);
-
     }
     return "index";
 }
@@ -56,24 +56,57 @@ public String save() {
     @PostMapping("/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session, Model model) {
         boolean loginResult = memberService.login(memberDTO);
-        if (loginResult) {
-            // 로그인 성공시 사용자의 이메일을 세션에 저장
-            session.setAttribute("loginEmail", memberDTO.getMemberEmail());
-            // model.addAttribute("member", memberDTO); // x
-            // 모델에 이메일 저장
-            model.addAttribute("email", memberDTO.getMemberEmail());
-            return "index";
-        } else {
-            return "/boardPages/list";
+        try {
+            if (loginResult) {
+                // 로그인 성공시 사용자의 이메일을 세션에 저장
+                session.setAttribute("loginEmail", memberDTO.getMemberEmail());
+                // model.addAttribute("member", memberDTO);
+                // 모델에 이메일 저장
+                model.addAttribute("email", memberDTO.getMemberEmail());
+                return "index";
+            } else {
+                return "/boardPages/list";
+            }
+        }catch(Exception e) {
+                e.getCause();
+                e.printStackTrace();
+                System.out.println("e = " + e);
         }
+        return "/boardPages/list";
     }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        // 아래 방법 중 한가지만 사용
-        // 해당 파라미터만 없앨 경우
-        session.removeAttribute("loginEmail");
-        // 세션 전체를 없앨 경우
-//        session.invalidate();
-        return "redirect:/";
+        try {
+            // 아래 방법 중 한가지만 사용
+            // 해당 파라미터만 없앨 경우
+            session.removeAttribute("loginEmail");
+            // 세션 전체를 없앨 경우
+    //        session.invalidate();
+        }catch (Exception e) {
+            return "redirect:/";
+        }
+            return "redirect:/";
+    }
+
+    @GetMapping("/sample")
+    public String sampleData() {
+    try {
+        for (int i = 1; i <= 20; i++) {
+            MemberDTO memberDTO = new MemberDTO();
+            memberDTO.setMemberEmail("aa" + i + "@naver.com");
+            memberDTO.setMemberPassword("pass" + i + "#");
+            memberDTO.setMemberName("memberName" + i);
+            memberDTO.setMemberMobile("010-" + i + i + i + i + "-" + i + i + i + i);
+
+            memberService.sampleData(memberDTO);
+        }
+    }catch (Exception e) {
+        e.getCause();
+        e.printStackTrace();
+        System.out.println("e = " + e);
+    }
+        return "redirect:/member/list";
+
     }
 }

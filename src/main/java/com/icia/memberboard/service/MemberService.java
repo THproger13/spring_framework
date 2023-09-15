@@ -67,4 +67,9 @@ public class MemberService {
             return false;
         }
     }
+
+    public void sampleData(MemberDTO memberDTO) {
+        memberDTO.setMemberProfileAttached(0);
+        memberRepository.save(memberDTO);
+    }
 }

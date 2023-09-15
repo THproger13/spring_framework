@@ -11,6 +11,12 @@
     <title>Board Contents</title>
 </head>
 <body>
-<h2>Board Contents</h2>
+<%@include file="component/header.jsp"%>
+<%@include file="component/nav.jsp"%>
+
+    <h2>Board Contents</h2>
+
+<%@include file="component/footer.jsp"%>
+
 </body>
 </html>
