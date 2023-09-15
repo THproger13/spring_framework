@@ -123,28 +123,9 @@ public String save() {
     }
     
     @GetMapping("/delete")
-    public String delete() {
-    try {
-        return "/memberPages/list";
-    }catch (Exception e) {
-        e.printStackTrace();
-        e.getCause();
-        System.out.println("e = " + e);
-    }
-    return "/memberPages/list";
-    }
-    @PostMapping("/delete")
-    public String delete(@RequestParam String memberEmail) {
-    try {
-        memberService.delete(memberEmail);
+    public String delete(@RequestParam("memberId") Long memberId) {
+        memberService.delete(memberId);
         return "redirect:/memberPages/list";
-    }catch(Exception e) {
-        e.printStackTrace();
-        e.getCause();
-        System.out.println("e = " + e);
-    }
-        return "redirect:/memberPages/list";
-
     }
 
 }

@@ -26,8 +26,8 @@
         select * from member_table1 where memberEmail=#{memberEmail} and memberPassword=#{memberPassword}
     </select>
 
-    <delete id = "delete" parameterType="String">
-        delete from member_table1 where memberEmail=#{memberEmail}
+    <delete id ="delete" parameterType="Long">
+        delete from member_table1 where memberId=#{memberId}
     </delete>
 
 </mapper>

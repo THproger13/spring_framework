@@ -74,9 +74,9 @@ public class MemberService {
         memberRepository.save(memberDTO);
     }
 
-    public void delete(String memberEmail) {
+    public void delete(Long memberId) {
         try{
-            memberRepository.delete(memberEmail);
+            memberRepository.delete(memberId);
         }catch(Exception e) {
             e.printStackTrace();
             e.getCause();

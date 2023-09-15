@@ -31,7 +31,7 @@
             <td>${member.memberName}</td>
             <td>${member.memberMobile}</td>
             <td>${member.memberProfileAttached}</td>
-            <td class="button" onclick="confirm_delete('${member.memberEmail}')">Delete</td>
+            <td class="button" onclick="confirm_delete('${member.memberId}')">Delete</td>
         </tr>
     </c:forEach>
     </table>
@@ -39,10 +39,10 @@
 
 </body>
 <script>
-    const confirm_delete = (memberEmail) => {
-        const confirmDelete = confirm("Do you want to delete " + memberEmail + "?");
+    const confirm_delete = (memberId) => {
+        const confirmDelete = confirm("Do you want to delete " + memberId + "?");
         if (confirmDelete) {
-            location.href = "/member/delete?memberEmail=" + memberEmail; // 컨트롤러로 이동하고 이메일을 파라미터로 전달
+            location.href = "/member/delete?memberId=" + memberId;
         }
     }
 </script>

@@ -54,9 +54,9 @@ public class MemberRepository {
         return memberDTO;
         }
 
-    public void delete(String memberEmail) {
+    public void delete(Long memberId) {
         try {
-            sql.delete("Member.delete", memberEmail);
+            sql.delete("Member.delete", memberId);
         }catch (Exception e) {
             e.getCause();
             e.printStackTrace();

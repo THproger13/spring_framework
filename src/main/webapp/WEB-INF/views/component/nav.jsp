@@ -17,6 +17,9 @@
                 <li class="menu-item">
                     <a href="/member/list">Member List</a>
                 </li>
+                <li class="menu-item">
+                    <a href="/member/sample">Create Sampledata</a>
+                </li>
             </c:when>
             <c:otherwise>
                 <li class="menu-item">
