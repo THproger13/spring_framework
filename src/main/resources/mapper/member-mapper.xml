@@ -38,6 +38,10 @@
         delete from member_table1 where memberId=#{memberId}
     </delete>
 
+    <update id="update" parameterType="member">
+        update member_table1 set memberEmail = #{memberEmail}, memberMobile = #{memberMobile} where memberId=#{memberId}
+    </update>
+
 </mapper>
 
 

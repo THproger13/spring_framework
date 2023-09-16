@@ -32,9 +32,9 @@ public class MemberRepository {
         }
     }
 
-    public MemberDTO findByMemberEmail(String memberEmail) {
+    public MemberDTO findByMemberEmail(String email) {
         try {
-            return sql.selectOne("Member.findByEmail", memberEmail);
+            return sql.selectOne("Member.findByEmail", email);
         }catch (Exception e){
             e.getCause();
             e.printStackTrace();
@@ -78,11 +78,15 @@ public class MemberRepository {
     }
 
     public MemberDTO findById(Long memberId) {
-        MemberDTO dbmember = sql.selectOne("Member.findById");
+        MemberDTO dbmember = sql.selectOne("Member.findById", memberId);
         return dbmember;
     }
 
     public MemberProfileDTO findMemberProfile(Long memberId) {
-        return sql.selectOne("Member.findMemberProfile");
+        return sql.selectOne("Member.findMemberProfile", memberId);
+    }
+
+    public void update(MemberDTO memberDTO) {
+        sql.update("Member.update", memberDTO);
     }
 }

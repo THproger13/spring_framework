@@ -52,8 +52,8 @@ public class MemberService {
         }
 
     }
-    public MemberDTO findByMemberEmail(String memberEmail) {
-        return memberRepository.findByMemberEmail(memberEmail);
+    public MemberDTO findByMemberEmail(String email) {
+        return memberRepository.findByMemberEmail(email);
     }
 
     public boolean login(MemberDTO memberDTO) {
@@ -84,6 +84,17 @@ public class MemberService {
         }
     }
 
+    public void deleteMemberProfile(Long memberId) {
+        MemberProfileDTO dto =  new MemberProfileDTO();
+        dto = memberRepository.findMemberProfile(memberId);
+        String storedProfileName = dto.getStoredProfileName();
+
+        File file = new File("C:\\spring_member_img\\" + storedProfileName);
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
     public List<MemberDTO> findAll() {
         try{
             List<MemberDTO> memberDTOList = memberRepository.findAll();
@@ -103,11 +114,13 @@ public class MemberService {
         return memberDTO;
     }
 
-    public void deleteMemberProfile(Long memberId) {
-        MemberProfileDTO dto = memberRepository.findMemberProfile(memberId);
-        File file = new File("C:\\spring_member_img\\" + MemberProfileDTO.getStoredProfileName());
-        if(file.exists()){
-            file.delete();
+    public void update(MemberDTO memberDTO) {
+        try {
+            memberRepository.update(memberDTO);
+        }catch (Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
         }
     }
 }

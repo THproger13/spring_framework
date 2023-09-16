@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/member")
@@ -130,6 +131,25 @@ public String save() {
     }
     memberService.delete(memberId);
         return "redirect:/memberPages/list";
+    }
+
+    @GetMapping("/update")
+    public String update(HttpSession session, Model model) {
+    try {
+        String email = (String) session.getAttribute("loginEmail");
+        MemberDTO memberDTO = memberService.findByMemberEmail(email);
+        model.addAttribute("member", memberDTO);
+    }catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Error occurred: " + e.getMessage());
+    }
+    return "/memberPages/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute MemberDTO memberDTO) {
+        memberService.update(memberDTO);
+        return "index";
     }
 
 }

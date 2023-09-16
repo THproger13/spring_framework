@@ -23,6 +23,9 @@
             </c:when>
             <c:otherwise>
                 <li class="menu-item">
+                    <a href="/member/update">update My Profile</a>
+                </li>
+                <li class="menu-item">
                     <a href="/board/save">Board Write</a>
                 </li>
                 <li class="menu-item">
