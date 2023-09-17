@@ -52,4 +52,9 @@ public class BoardRepository {
         return sql.selectList("Board.findFile", boardId);
     }
 
+    public void delete(Long boardId) {
+        sql.delete("Board.delete", boardId);
+    }
+
+
 }

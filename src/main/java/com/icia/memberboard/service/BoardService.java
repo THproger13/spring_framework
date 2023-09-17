@@ -120,4 +120,17 @@ private BoardRepository boardRepository;
     public List<BoardFileDTO> findFile(Long boardId) {
         return boardRepository.findFile(boardId);
     }
+
+    public void deleteFile(Long boardId) {
+        List<BoardFileDTO> boardFileDTOList = boardRepository.findFile(boardId);
+        for(BoardFileDTO boardFileDTO : boardFileDTOList) {
+            File file = new File("C:\\spring_board_img\\" + boardFileDTO.getStoredFileName());
+            if(file.exists()) {
+                file.delete();
+            }
+        }
+    }
+    public void delete(Long boardId) {
+        boardRepository.delete(boardId);
+    }
 }

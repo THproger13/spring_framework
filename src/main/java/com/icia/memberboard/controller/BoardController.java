@@ -6,6 +6,7 @@ import com.icia.memberboard.dto.PageDTO;
 import com.icia.memberboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,6 +95,16 @@ public class BoardController {
         model.addAttribute("q", q);
         model.addAttribute("type", type);
         return "boardPages/detail";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("boardId") Long boardId) {
+        BoardDTO boardDTO = boardService.findById(boardId);
+        if(boardDTO.getFileAttached() == 1) {
+            boardService.deleteFile(boardId);
+        }
+        boardService.delete(boardId);
+        return "/board/list";
     }
 
 }
