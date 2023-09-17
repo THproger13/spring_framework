@@ -16,7 +16,7 @@
 
     <select id="search" parameterType="HashMap" resultType="board">
         select boardId, boardWriter, boardTitle, date_format(createdAt, "%y-%m-%d %H:%i%s") as createdAt, boardHits
-        from board_table1 where ${type} Like CONCAT('%',#{q},'%') order by id desc
+        from board_table1 where ${type} Like CONCAT('%',#{q},'%') order by boardId desc
             limit #{start}, #{limit}
     </select>
 
@@ -31,6 +31,18 @@
 
     <select id="searchCount" parameterType="map" resultType="Integer">
         select count(boardId) as count from board_table1 where ${type} Like CONCAT('%',#{q},'%')
+    </select>
+
+    <update id="upHits" parameterType="Long">
+        update board_table1 set boardHits=boardHits+1 where boardId = #{boardId}
+    </update>
+
+    <select id="findById" parameterType="Long" resultType="board">
+        select * from board_table1 where boardId = #{boardId}
+    </select>
+
+    <select id="findFile" parameterType="Long" resultType="boardFile">
+        select * from board_file_table1 where boardId = #{boardId}
     </select>
 
 </mapper>

@@ -110,4 +110,14 @@ private BoardRepository boardRepository;
         pageDTO.setStartPage(startPage);
         return pageDTO;
     }
+    public void upHits(Long boardId) {
+        boardRepository.upHits(boardId);
+    }
+
+    public BoardDTO findById(Long boardId) {
+        return boardRepository.findById(boardId);
+    }
+    public List<BoardFileDTO> findFile(Long boardId) {
+        return boardRepository.findFile(boardId);
+    }
 }

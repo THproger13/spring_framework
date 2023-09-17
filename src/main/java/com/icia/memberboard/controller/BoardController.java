@@ -1,6 +1,7 @@
 package com.icia.memberboard.controller;
 
 import com.icia.memberboard.dto.BoardDTO;
+import com.icia.memberboard.dto.BoardFileDTO;
 import com.icia.memberboard.dto.PageDTO;
 import com.icia.memberboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -58,5 +62,38 @@ public class BoardController {
         return "boardPages/list";
     }
 
+    @GetMapping
+    public String detail(Model model,
+                         @RequestParam("boardId") Long boardId,
+                         @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                         @RequestParam(value = "searchType", required = false, defaultValue = "boardTitle") String type,
+                         @RequestParam(value = "q", required = false, defaultValue = "") String q,
+                         HttpServletResponse response, HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        boolean isHit = false;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("hit" + boardId)) {
+                isHit = true;
+            }
+        }
+        if (!isHit) {
+            boardService.upHits(boardId);
+            Cookie cookie = new Cookie("hit" + boardId, "1");
+            cookie.setPath("/");
+            cookie.setMaxAge(5 * 60);
+            response.addCookie(cookie);
+        }
+        BoardDTO boardDTO = boardService.findById(boardId);
+        if (boardDTO.getFileAttached() == 1) {
+            List<BoardFileDTO> boardFileDTOList = boardService.findFile(boardId);
+            model.addAttribute("boardFileList", boardFileDTOList);
+        }
+        model.addAttribute("board", boardDTO);
+
+        model.addAttribute("page", page);
+        model.addAttribute("q", q);
+        model.addAttribute("type", type);
+        return "boardPages/detail";
+    }
 
 }

@@ -15,13 +15,39 @@
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            background-image: url('https://www.freecodecamp.org/news/content/images/size/w2000/2022/09/jonatan-pie-3l3RwQdHRHg-unsplash.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container, .input-group, .table {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
 <div class="row justify-content-center">
     <div class="col-10">
         <%@include file="../component/header.jsp" %>
         <%@include file="../component/nav.jsp" %>
-        <h3 class="text-center mb-3">게시판</h3>
+        <h3 class="text-center mb-3">board List</h3>
     </div>
 </div>
 <div class="row justify-content-center">
@@ -51,8 +77,8 @@
                 </tr>
                 <c:forEach items="${boardList}" var="board">
                     <tr>
-                        <td>${board.id}</td>
-                        <td><a href="/board?id=${board.id}&page=${paging.page}&searchType=${type}&q=${q}">${board.boardTitle}</a></td>
+                        <td>${board.boardId}</td>
+                        <td><a href="/board?boardId=${board.boardId}&page=${paging.page}&searchType=${type}&q=${q}">${board.boardTitle}</a></td>
                         <td>${board.boardWriter}</td>
                         <td>${board.boardHits}</td>
                         <td>${board.createdAt}</td>
@@ -67,13 +93,13 @@
                     <%-- 현재 페이지가 1페이지면 이전으로 이동을 제한 --%>
                     <c:when test="${paging.page<=1}">
                         <li class="page-item disabled">
-                            <a class="page-link">[이전]</a>
+                            <a class="page-link">[prev]</a>
                         </li>
                     </c:when>
                     <%-- 1페이지가 아닌 경우에는 [이전]을 클릭하면 현재 페이지보다 1 작은 페이지 요청 --%>
                     <c:otherwise>
                         <li class="page-item">
-                            <a class="page-link" href="/board/list?page=${paging.page-1}&searchType=${type}&q=${q}">[이전]</a>
+                            <a class="page-link" href="/board/list?page=${paging.page-1}&searchType=${type}&q=${q}">[prev]</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -99,12 +125,12 @@
                 <c:choose>
                     <c:when test="${paging.page>=paging.maxPage}">
                         <li class="page-item disabled">
-                            <a class="page-link">[다음]</a>
+                            <a class="page-link">[next]</a>
                         </li>
                     </c:when>
                     <c:otherwise>
                         <li class="page-item">
-                            <a class="page-link" href="/board/list?page=${paging.page+1}&searchType=${type}&q=${q}">[다음]</a>
+                            <a class="page-link" href="/board/list?page=${paging.page+1}&searchType=${type}&q=${q}">[next]</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
