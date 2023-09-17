@@ -71,13 +71,13 @@ public class BoardController {
                          @RequestParam(value = "q", required = false, defaultValue = "") String q,
                          HttpServletResponse response, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        boolean isHit = false;
+        boolean isHitted = false;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("hit" + boardId)) {
-                isHit = true;
+                isHitted = true;
             }
         }
-        if (!isHit) {
+        if (!isHitted) {
             boardService.upHits(boardId);
             Cookie cookie = new Cookie("hit" + boardId, "1");
             cookie.setPath("/");
@@ -104,7 +104,27 @@ public class BoardController {
             boardService.deleteFile(boardId);
         }
         boardService.delete(boardId);
-        return "/board/list";
+        return "/boardPages/list";
+    }
+
+    @GetMapping("/update")
+    public String update(Model model,
+                         @RequestParam("boardId") Long boardId) {
+
+        BoardDTO boardDTO = boardService.findById(boardId);
+        if (boardDTO.getFileAttached() == 1) {
+            List<BoardFileDTO> boardFileDTOList = boardService.findFile(boardId);
+            model.addAttribute("boardFileList", boardFileDTOList);
+        }
+        model.addAttribute("board", boardDTO);
+
+        return "boardPages/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute BoardDTO boardDTO, @RequestParam(value = "deleteFile", required = false) List<String> deleteFileName) throws IOException {
+        boardService.update(boardDTO, deleteFileName);
+        return "redirect:/board?boardId=" + boardDTO.getBoardId();
     }
 
 }

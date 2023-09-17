@@ -133,4 +133,66 @@ private BoardRepository boardRepository;
     public void delete(Long boardId) {
         boardRepository.delete(boardId);
     }
+    public void update(BoardDTO boardDTO, List<String> deleteFileName) throws IOException {
+        List<BoardFileDTO> boardFileDTOList = boardRepository.findFile(boardDTO.getBoardId());
+        System.out.println("deleteFileName = " + deleteFileName);
+        System.out.println(boardFileDTOList.size() == deleteFileName.size());
+        if (deleteFileName != null) {
+            if (boardFileDTOList.size() == deleteFileName.size() && boardDTO.getBoardFile().get(0).isEmpty()) {
+                boardDTO.setFileAttached(0);
+            } else {
+                boardDTO.setFileAttached(1);
+            }
+            // 삭제할 파일 삭제
+            for (String fileName : deleteFileName) {
+                File file = new File("C:\\spring_board_img\\" + fileName);
+                if (file.exists()) {
+                    file.delete();
+                }
+                BoardFileDTO boardFileDTO = new BoardFileDTO();
+                boardFileDTO.setBoardId(boardDTO.getBoardId());
+                boardFileDTO.setStoredFileName(fileName);
+                boardRepository.deleteFile(boardFileDTO);
+            }
+            boardRepository.update(boardDTO);
+            if(!boardDTO.getBoardFile().get(0).isEmpty()) {
+                List<MultipartFile> boardFileList = boardDTO.getBoardFile();
+                for (MultipartFile boardFile : boardFileList) {
+                    // 파일 이름 가져오기
+                    String originalFileName = boardFile.getOriginalFilename();
+                    // 저장용 이름 만들기
+                    String storedFileName = System.currentTimeMillis() + "-" + originalFileName;
+                    // BoardFileDTO 세팅
+                    BoardFileDTO boardFileDTO = new BoardFileDTO();
+                    boardFileDTO.setOriginalFileName(originalFileName);
+                    boardFileDTO.setStoredFileName(storedFileName);
+                    boardFileDTO.setBoardId(boardDTO.getBoardId());
+                    // 파일 저장용 폴더에 파일 저장 처리
+                    String savePath = "C:\\spring_board_img\\" + storedFileName;
+                    boardFile.transferTo(new File(savePath));
+                    boardRepository.saveFile(boardFileDTO);
+                }
+            }
+        } else {
+            if(!boardDTO.getBoardFile().get(0).isEmpty()){
+                boardDTO.setFileAttached(1);boardDTO.setFileAttached(1);
+                List<MultipartFile> boardFileList = boardDTO.getBoardFile();
+                for (MultipartFile boardFile : boardFileList) {
+                    // 파일 이름 가져오기
+                    String originalFileName = boardFile.getOriginalFilename();
+                    // 저장용 이름 만들기
+                    String storedFileName = System.currentTimeMillis() + "-" + originalFileName;
+                    // BoardFileDTO 세팅
+                    BoardFileDTO boardFileDTO = new BoardFileDTO();
+                    boardFileDTO.setOriginalFileName(originalFileName);
+                    boardFileDTO.setStoredFileName(storedFileName);
+                    boardFileDTO.setBoardId(boardDTO.getBoardId());
+                    // 파일 저장용 폴더에 파일 저장 처리
+                    String savePath = "C:\\spring_board_img\\" + storedFileName;
+                    boardFile.transferTo(new File(savePath));
+                    boardRepository.saveFile(boardFileDTO);
+                }
+            }
+        }
+    }
 }

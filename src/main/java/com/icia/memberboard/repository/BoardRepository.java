@@ -55,6 +55,11 @@ public class BoardRepository {
     public void delete(Long boardId) {
         sql.delete("Board.delete", boardId);
     }
+    public void deleteFile(BoardFileDTO boardFileDTO) {
+        sql.delete("Board.deleteBoardFile",boardFileDTO);
+    }
 
-
+    public void update(BoardDTO boardDTO) {
+        sql.update("Board.update", boardDTO);
+    }
 }
