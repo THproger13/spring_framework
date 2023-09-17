@@ -69,14 +69,17 @@ public String save() {
 
     @PostMapping("/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session, Model model) {
-        boolean loginResult = memberService.login(memberDTO);
         try {
+            boolean loginResult = memberService.login(memberDTO);
             if (loginResult) {
                 // 로그인 성공시 사용자의 이메일을 세션에 저장
+                session.setAttribute("loginId", memberDTO.getMemberId());
+                session.setAttribute("loginName", memberDTO.getMemberName());
                 session.setAttribute("loginEmail", memberDTO.getMemberEmail());
-                // model.addAttribute("member", memberDTO);
-                // 모델에 이메일 저장
+
                 model.addAttribute("email", memberDTO.getMemberEmail());
+                //model.addAttribute("member", memberDTO);
+                // 모델에 이메일 저장
                 return "index";
             } else {
                 return "/boardPages/list";

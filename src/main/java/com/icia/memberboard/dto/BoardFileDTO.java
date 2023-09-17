@@ -1,4 +1,12 @@
 package com.icia.memberboard.dto;
 
-public class BoardFileDTO {
+import lombok.Data;
+
+@Data
+public class BoardFileDTO extends BoardDTO {
+
+    private Long BoardFileId;
+    private String originalFileName;
+    private String storedFileName;
+
 }
