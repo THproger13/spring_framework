@@ -2,8 +2,10 @@ package com.icia.memberboard.controller;
 
 import com.icia.memberboard.dto.BoardDTO;
 import com.icia.memberboard.dto.BoardFileDTO;
+import com.icia.memberboard.dto.CommentDTO;
 import com.icia.memberboard.dto.PageDTO;
 import com.icia.memberboard.service.BoardService;
+import com.icia.memberboard.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -21,6 +23,8 @@ import java.util.List;
 public class BoardController {
     @Autowired
     private BoardService boardService;
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/save")
     public String save() {
@@ -94,6 +98,14 @@ public class BoardController {
         model.addAttribute("page", page);
         model.addAttribute("q", q);
         model.addAttribute("type", type);
+
+        List<CommentDTO> commentDTOList = commentService.findAll(boardId);
+        if(commentDTOList.size() == 0) {
+            model.addAttribute("commentList", null);
+        }
+        else{
+            model.addAttribute("commentList", commentDTOList);
+        }
         return "boardPages/detail";
     }
 

@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
   <title>Content detail</title>
@@ -9,6 +11,7 @@
           crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
+
     body {
       background-image: url('https://www.freecodecamp.org/news/content/images/size/w2000/2022/09/jonatan-pie-3l3RwQdHRHg-unsplash.jpg');
       background-size: cover;
@@ -66,6 +69,37 @@
         </c:if>
       </div>
     </div>
+
+    <div id="comment-write-area">
+      <input type ="text" name="commentWriter" id ="commentWriter" value="${sessionScope.loginEmail}" readonly>
+      <input type ="text" name="commentContents" id="commentContents" placeholder="Write Comment Here">
+      <button onclick="comment_write()">Comment write</button>
+    </div>
+
+    <div id="comment-list-area">
+      <c:choose>
+        <c:when test="${commentList == null}">
+          <h3>No Comments Written</h3>
+        </c:when>
+        <c:otherwise>
+          <table id = "comment-list">
+            <tr>
+              <th>Comment Writer</th>
+              <th>Comment Contents</th>
+              <th>Comment Written At</th>
+            </tr>
+              <c:forEach items="${commentList}" var="comment">
+            <tr>
+              <td>${comment.commentWriter}</td>
+              <td>${comment.commentContents}</td>
+              <td>${comment.commentCreatedDate}</td>
+            </tr>
+            </c:forEach>
+          </table>
+        </c:otherwise>
+      </c:choose>
+    </div>
+
     <%@include file="../component/footer.jsp" %>
   </div>
 </div>
@@ -74,6 +108,7 @@
   const page = '${page}';
   const type = '${type}';
   const q = '${q}';
+
   const update_fn = (boardId) => {
     location.href = "/board/update?boardId=" + boardId;
   }
@@ -85,5 +120,45 @@
       location.href = "/board/delete?boardId=" + boardId;
     }
   }
+
+  const comment_write = () => {
+    const commentWriter = document.getElementById("commentWriter").value;
+    const commentContents = document.getElementById("commentContents").value;
+    // const commentCreatedDate = 'comment.commentCreatedDate';
+    const boardId = '${board.boardId}';
+    const result = document.getElementById("comment-list-area");
+
+    $.ajax ({
+      type:"post",
+      url:"/comment/saveAjax",
+      data:{
+        commentWriter : commentWriter,
+        commentContents : commentContents,
+        boardId : boardId
+      },
+      success: function (res) {
+        console.log("리턴값: ", res);
+        let output = "<table id=\"comment-list\">\n" +
+                "    <tr>\n" +
+                "        <th>commentWriter</th>\n" +
+                "        <th>commentContents</th>\n" +
+                "    </tr>\n";
+        for (let i in res) {
+          output += "    <tr>\n";
+          output += "        <td>" + res[i].commentWriter + "</td>\n";
+          output += "        <td>" + res[i].commentContents + "</td>\n";
+          output += "    </tr>\n";
+        }
+        output += "</table>";
+        result.innerHTML = output;
+        // document.getElementById("comment-writer").value = "";
+        document.getElementById("comment-contents").value = "";
+      },
+      error: function () {
+        console.log("댓글 작성 실패");
+      }
+    });
+    }
+
 </script>
 </html>

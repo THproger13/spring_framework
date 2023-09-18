@@ -49,7 +49,7 @@
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text">boardWriter</span>
-        <input class="form-control" type="text" name="boardWriter" value="${sessionScope.loginName}" readonly>
+        <input class="form-control" type="text" name="boardWriter" value="${sessionScope.loginEmail}" readonly>
       </div>
       <div class="input-group mb-3">
         <textarea class="form-control" name="boardContents" placeholder="boardContents">${board.boardContents}</textarea>
@@ -68,7 +68,7 @@
       </div>
       <div class="input-group text-center">
         <button>Update</button>
-        <button type="button">Cancel Update</button>
+        <button type="button" onclick="cancel_fn()">Cancel Update</button>
       </div>
     </form>
     <%@include file="../component/footer.jsp" %>
