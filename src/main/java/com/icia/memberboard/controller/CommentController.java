@@ -22,4 +22,10 @@ public class CommentController {
             List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId());
             return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
     }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("commentId") Long commentId) {
+        commentService.delete(commentId);
+        return "redirect:/board/detail";
+    }
 }

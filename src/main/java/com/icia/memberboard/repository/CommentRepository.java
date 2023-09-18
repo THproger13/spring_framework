@@ -19,4 +19,8 @@ public class CommentRepository {
     public List<CommentDTO> findAll(Long boardId) {
         return sql.selectList("Comment.findAll", boardId);
     }
+
+    public void delete(Long commentId) {
+        sql.delete("Comment.delete", commentId);
+    }
 }

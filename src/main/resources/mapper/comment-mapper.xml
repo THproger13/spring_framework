@@ -12,4 +12,7 @@
                date_format(commentCreatedDate, "%y-%m-%d %H:%i:%s") as commentCreatedDate, boardId
         from comment_table1 where boardId = #{boardId} order by commentId desc
     </select>
+    <delete id="delete" parameterType="Long">
+        delete from comment_table1 where commentId=#{commentId}
+    </delete>
 </mapper>

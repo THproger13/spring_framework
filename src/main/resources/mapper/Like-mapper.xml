@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Like">
+    <insert id="save" parameterType="like">
+        insert into like_table(boardId, likeCount, isClicked)
+        values (#{boardId}, #{likeCount}, #{isClicked})
+    </insert>
+
+    <update id="upHits" parameterType="Long">
+        update like_table set likeCount=likeCount+1 where boardId = #{boardId}
+    </update>
+
+    <select id="findById" parameterType="Long" resultType="like">
+        select * from like_table where boardId = #{boardId}
+    </select>
+
+
+</mapper>

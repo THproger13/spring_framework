@@ -1,16 +1,47 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
   <title>Content detail</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
           crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap");
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #e8efff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .like__btn {
+      padding: 10px 15px;
+      background: linear-gradient(to right, #800080, #00008B); /* 자주색에서 짙은 바다색으로 그라데이션 효과 */
+      font-size: 14px;
+      font-family: "Open Sans", sans-serif;
+      border-radius: 5px;
+      color: #e8efff;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      width: 6.75%;
+      float: right;
+    }
 
     body {
       background-image: url('https://www.freecodecamp.org/news/content/images/size/w2000/2022/09/jonatan-pie-3l3RwQdHRHg-unsplash.jpg');
@@ -46,8 +77,16 @@
     <div class="card p-3">
       <h5 class="card-title">${board.boardTitle}</h5>
       <hr>
-      <h6 class="card-subtitle mb-2 text-body-secondary text-end">작성자: ${board.boardWriter}
-        조회수: ${board.boardHits}</h6>
+      <h6 class="card-subtitle mb-4 text-body-secondary text-end">boardWriter: ${board.boardWriter}
+        boardHits: ${board.boardHits}  </h6>
+
+      <!--좋아요 버튼-->
+      <button class="like__btn">
+        <span id="icon"><i class="far fa-thumbs-up"></i></span>
+        <span name="likeCount" id="likeCount">0</span> Like
+      </button>
+      <!--좋아요 버튼-->
+
       <p class="card-text">${board.boardContents}</p>
       <c:if test="${board.fileAttached == 1}">
         <div class="row">
@@ -75,7 +114,8 @@
       <input type ="text" name="commentContents" id="commentContents" placeholder="Write Comment Here">
       <button onclick="comment_write()">Comment write</button>
     </div>
-
+<%--    comment-list-area의 경우 ajax으로 보내주는 테이블의 형식이랑 같아야 한다
+그렇게 로직을 짜지 않으면 ajax으로 새로운 댓글을 보낼때 ajax으로 받아온 형식대로 테이블 형식이 바뀌어 버린다. --%>
     <div id="comment-list-area">
       <c:choose>
         <c:when test="${commentList == null}">
@@ -84,15 +124,19 @@
         <c:otherwise>
           <table id = "comment-list">
             <tr>
+              <th>CommentId</th>
               <th>Comment Writer</th>
               <th>Comment Contents</th>
               <th>Comment Written At</th>
+              <th>Delete Comment</th>
             </tr>
               <c:forEach items="${commentList}" var="comment">
             <tr>
+              <td class="commentId">${comment.commentId}</td>
               <td>${comment.commentWriter}</td>
               <td>${comment.commentContents}</td>
               <td>${comment.commentCreatedDate}</td>
+              <button onclick="delete_comment_confirm(this)">Delete Comment</button>
             </tr>
             </c:forEach>
           </table>
@@ -105,7 +149,30 @@
 </div>
 </body>
 <script>
-  const page = '${page}';
+
+//좋아요 버튼 동작 정의
+  const likeBtn = document.querySelector(".like__btn");
+  let likeIcon = document.querySelector("#icon"),
+          likeCount = document.querySelector("#likeCount");
+
+  let clicked = false;
+
+
+  likeBtn.addEventListener("click", () => {
+    if (!clicked) {
+      clicked = true;
+      likeIcon.innerHTML = `<i class="fas fa-thumbs-up"></i>`;
+      likeCount.textContent++;
+    } else {
+      clicked = false;
+      likeIcon.innerHTML = `<i class="far fa-thumbs-up"></i>`;
+      likeCount.textContent--;
+    }
+  });
+//좋아요 버튼 동작 정의 끝
+
+
+const page = '${page}';
   const type = '${type}';
   const q = '${q}';
 
@@ -119,6 +186,23 @@
     if(confirm("해당 게시글을 삭제하시겠습니까?")) {
       location.href = "/board/delete?boardId=" + boardId;
     }
+  }
+  const delete_comment_confirm = (buttonElement) => {
+    if (confirm("are you sure to delete comment?")) {
+      const commentIdElement = buttonElement.parentElement.parentElement.querySelector('.commentId');
+      if (commentIdElement) {
+        const commentId = commentIdElement.textContent;
+        return delete_comment(commentId);
+      } else {
+        console.error("Comment ID element not found.");
+      }
+    } else {
+      location.href = "/board/FindAll";
+    }
+  }
+
+  const delete_comment = (commentId) => {
+    location.href = "/comment/delete?commentId=" + commentId;
   }
 
   const comment_write = () => {
