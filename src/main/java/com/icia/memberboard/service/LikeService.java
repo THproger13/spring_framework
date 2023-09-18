@@ -14,6 +14,12 @@ public class LikeService {
         likeRepository.save(likeDTO);
     }
 
+    public void upLike(Long boardId) {
+        likeRepository.upLike(boardId);
+    }
+    public void downLike(Long boardId) {
+        likeRepository.downLike(boardId);
+    }
     public LikeDTO findById(Long boardId) {
         return likeRepository.findById(boardId);
     }

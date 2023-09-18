@@ -8,8 +8,11 @@
         values (#{boardId}, #{likeCount}, #{isClicked})
     </insert>
 
-    <update id="upHits" parameterType="Long">
+    <update id="upLike" parameterType="Long">
         update like_table set likeCount=likeCount+1 where boardId = #{boardId}
+    </update>
+    <update id="downLike" parameterType="Long">
+        update like_table set likeCount=likeCount-1 where boardId = #{boardId}
     </update>
 
     <select id="findById" parameterType="Long" resultType="like">

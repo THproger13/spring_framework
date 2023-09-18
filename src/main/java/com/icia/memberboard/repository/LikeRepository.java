@@ -14,8 +14,15 @@ public class LikeRepository {
         sql.insert("Like.save", likeDTO);
     }
 
+    public void upLike(Long boardId) {
+        sql.update("Like.upLike", boardId);
+    }
+    public void downLike(Long boardId) {
+        sql.update("Like.downLike", boardId);
+    }
     public LikeDTO findById(Long boardId) {
         return sql.selectOne("Like.findById", boardId);
     }
+
 
 }

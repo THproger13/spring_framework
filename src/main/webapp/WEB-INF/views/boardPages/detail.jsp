@@ -39,7 +39,7 @@
       outline: none;
       border: none;
       cursor: pointer;
-      width: 6.75%;
+      width: 10%;
       float: right;
     }
 
@@ -82,7 +82,7 @@
 
       <!--좋아요 버튼-->
       <button class="like__btn">
-        <span id="icon"><i class="far fa-thumbs-up"></i></span>
+        <span name="icon" id="icon"><i class="far fa-thumbs-up"></i></span>
         <span name="likeCount" id="likeCount">0</span> Like
       </button>
       <!--좋아요 버튼-->
@@ -155,18 +155,43 @@
   let likeIcon = document.querySelector("#icon"),
           likeCount = document.querySelector("#likeCount");
 
-  let clicked = false;
+  let isClicked = false;
 
 
   likeBtn.addEventListener("click", () => {
-    if (!clicked) {
-      clicked = true;
+    if (!isClicked) {
+      isClicked = true;
       likeIcon.innerHTML = `<i class="fas fa-thumbs-up"></i>`;
-      likeCount.textContent++;
+      // const likeIconType = likeIcon.innerHTML;
+      const likeCountUp = likeCount.textContent++;
+      $.ajax({
+        url : "/Like/like",
+        type : "POST",
+        data : {
+          isClicked : isClicked,
+          likeCountUp : likeCountUp
+        },
+        success : function (res){
+
+        }
+      });
+
     } else {
-      clicked = false;
+      isClicked = false;
       likeIcon.innerHTML = `<i class="far fa-thumbs-up"></i>`;
-      likeCount.textContent--;
+      // const likeIconDown = likeIcon.innerHTML;
+      const likeCountDown = likeCount.textContent--;
+      $.ajax({
+        url : "/Like/like",
+        type : "post",
+        data : {
+          isClicked : isClicked,
+          likeCountDown : likeCountDown
+        },
+        success : function (res){
+
+        }
+      });
     }
   });
 //좋아요 버튼 동작 정의 끝
