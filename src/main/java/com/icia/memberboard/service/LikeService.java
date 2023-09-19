@@ -10,8 +10,11 @@ public class LikeService {
     @Autowired
     private LikeRepository likeRepository;
 
-    public void save(LikeDTO likeDTO) {
-        likeRepository.save(likeDTO);
+    public void save(Long boardId, boolean isClicked) {
+        likeRepository.save(boardId, isClicked);
+    }
+    public void update(Long boardId, boolean isClicked) {
+        likeRepository.update(boardId, isClicked);
     }
 
     public void upLike(Long boardId) {
@@ -20,7 +23,7 @@ public class LikeService {
     public void downLike(Long boardId) {
         likeRepository.downLike(boardId);
     }
-    public LikeDTO findById(Long boardId) {
+    public Long findById(Long boardId) {
         return likeRepository.findById(boardId);
     }
 

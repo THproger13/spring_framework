@@ -81,7 +81,7 @@
         boardHits: ${board.boardHits}  </h6>
 
       <!--좋아요 버튼-->
-      <button class="like__btn">
+      <button class="like__btn" data-board-id="${board.boardId}">
         <span name="icon" id="icon"><i class="far fa-thumbs-up"></i></span>
         <span name="likeCount" id="likeCount">0</span> Like
       </button>
@@ -152,48 +152,32 @@
 
 //좋아요 버튼 동작 정의
   const likeBtn = document.querySelector(".like__btn");
-  let likeIcon = document.querySelector("#icon"),
-          likeCount = document.querySelector("#likeCount");
+  let likeIcon = document.querySelector("#icon");
+  let likeCount = document.querySelector("#likeCount");
+  const boardId = "${board.boardId}";
 
-  let isClicked = false;
+  // let isClicked = false;
 
-
-  likeBtn.addEventListener("click", () => {
-    if (!isClicked) {
-      isClicked = true;
-      likeIcon.innerHTML = `<i class="fas fa-thumbs-up"></i>`;
-      // const likeIconType = likeIcon.innerHTML;
-      const likeCountUp = likeCount.textContent++;
-      $.ajax({
-        url : "/Like/like",
-        type : "POST",
-        data : {
-          isClicked : isClicked,
-          likeCountUp : likeCountUp
-        },
-        success : function (res){
-
-        }
-      });
-
-    } else {
-      isClicked = false;
-      likeIcon.innerHTML = `<i class="far fa-thumbs-up"></i>`;
-      // const likeIconDown = likeIcon.innerHTML;
-      const likeCountDown = likeCount.textContent--;
-      $.ajax({
-        url : "/Like/like",
-        type : "post",
-        data : {
-          isClicked : isClicked,
-          likeCountDown : likeCountDown
-        },
-        success : function (res){
-
-        }
-      });
+likeBtn.addEventListener("click", () => {
+  $.ajax({
+    url: "/Like/like",
+    type: "POST",
+    data: {boardId: boardId},
+    success: function (res) {
+      if (res.success) {
+        likeCount.textContent = res.likeCount;
+        likeIcon.innerHTML = res.isClicked ? `<i class="fas fa-thumbs-up"></i>` : `<i class="far fa-thumbs-up"></i>`;
+        // } else {
+        //   alert(res.message);
+        // }
+      }
+    },
+    error: function (error) {
+      console.log(error);
+      alert("An error occurred");
     }
   });
+});
 //좋아요 버튼 동작 정의 끝
 
 

@@ -5,13 +5,20 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Repository
 public class LikeRepository {
     @Autowired
     private SqlSessionTemplate sql;
 
-    public void save(LikeDTO likeDTO) {
-        sql.insert("Like.save", likeDTO);
+    public void save(Long boardId, boolean isClicked) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardId", boardId);
+        //params.put("loginEmail", loginEmail);
+        params.put("isClicked", isClicked);
+        sql.insert("Like.save", params);
     }
 
     public void upLike(Long boardId) {
@@ -20,9 +27,14 @@ public class LikeRepository {
     public void downLike(Long boardId) {
         sql.update("Like.downLike", boardId);
     }
-    public LikeDTO findById(Long boardId) {
-        return sql.selectOne("Like.findById", boardId);
+
+    public void update(Long boardId, boolean isClicked) {
+        sql.update("Like.update", isClicked);
     }
-
-
+    public Long findById(Long boardId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardId", boardId);
+        //params.put("loginEmail", loginEmail);
+        return sql.selectOne("Like.findById", params);
+    }
 }

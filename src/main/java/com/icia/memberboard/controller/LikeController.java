@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,57 +20,50 @@ public class LikeController {
 
     @PostMapping("/like")
     @ResponseBody
-    public Map<String, Object> like(@RequestParam Long boardId,@RequestBody LikeDTO likeDTO) {
-        Map<String, Object> response = new HashMap<>();
+    public Map<String, Object> like(@RequestParam Long boardId, HttpSession session) {
+        Map<String, Object> response = null;
+        try {
+            response = new HashMap<>();
+            String loginEmail = (String) session.getAttribute("loginEmail");
 
-        // 사용자가 이미 좋아요 버튼을 클릭했는지 확인합니다 (이를 위해 세션 또는 사용자 인증이 필요할 수 있습니다)
-        boolean isClicked = false;// 여기에 사용자가 이미 이 게시물에 좋아요를 클릭했는지 확인하는 로직을 구현합니다.
-        likeDTO = likeService.findById(boardId);
+            // DB에서 현재 loginEmail과 boardId에 해당하는 레코드를 찾음.
+            Long likeCount = likeService.findById(boardId);
+            boolean isClicked = likeCount != null && likeCount > 0;
 
-        if (!isClicked && likeDTO.getLikeCount()==0) {
-            // 데이터베이스에서 좋아요 수를 증가시킵니다.
-            if (likeDTO != null) {
-                likeDTO.setLikeCount(likeDTO.getLikeCount() + 1);
-                likeService.save(likeDTO);
+//        LikeDTO likeDTO = new LikeDTO();
 
-                // 업데이트된 좋아요 수를 포함한 응답을 보냅니다.
+            if (likeCount == null ) {
+                // 좋아요를 처음 누르는 경우
+                likeService.save(boardId, true); // DB에 추가
+                likeService.upLike(boardId); // likeCount 증가
+                System.out.println(likeCount);
                 response.put("success", true);
-                response.put("likeCount", likeDTO.getLikeCount());
-            } else {
-                response.put("success", false);
-                response.put("message", "게시물을 찾을 수 없습니다.");
-            }
-        } else if(!isClicked && likeDTO.getLikeCount() > 0) {
-//            LikeDTO likeDTO = likeService.findById(boardId);
-            if (likeDTO != null) {
-                likeDTO.setLikeCount(likeDTO.getLikeCount() + 1);
-                likeService.upLike(boardId);
-
-                // 업데이트된 좋아요 수를 포함한 응답을 보냅니다.
+                response.put("likeCount", likeService.findById(boardId));
+                response.put("isClicked", true);
+            } else if (isClicked) {
+                // 이미 좋아요를 눌렀던 경우
+                likeService.update(boardId, false); // isClicked를 false로 설정
+                likeService.downLike(boardId); // likeCount 감소
+                System.out.println(likeCount);
                 response.put("success", true);
-                response.put("likeCount", likeDTO.getLikeCount());
+                response.put("likeCount", likeService.findById(boardId));
+                response.put("isClicked", false);
             } else {
-                response.put("success", false);
-                response.put("message", "게시물을 찾을 수 없습니다.");
-            }
-            response.put("success", false);
-            response.put("message", "이미 이 게시물에 좋아요를 클릭하셨습니다.");
-        }else if(isClicked && likeDTO.getLikeCount() == 0) {
-
-//            LikeDTO likeDTO = likeService.findById(boardId);
-            if (likeDTO != null) {
-                likeDTO.setLikeCount(likeDTO.getLikeCount() - 1);
-                likeService.downLike(boardId);
-
-                // 업데이트된 좋아요 수를 포함한 응답을 보냅니다.
+                // 좋아요를 취소했다가 다시 누르는 경우
+                likeService.update(boardId, true);
+                // isClicked를 true로 설정
+                likeService.upLike(boardId); // likeCount 증가
+                System.out.println(likeCount);
                 response.put("success", true);
-                response.put("likeCount", likeDTO.getLikeCount());
-            } else {
-                response.put("success", false);
-                response.put("message", "게시물을 찾을 수 없습니다.");
+                response.put("likeCount", likeService.findById(boardId));
+                response.put("isClicked", true);
             }
-            response.put("success", false);
-            response.put("message", "이미 이 게시물에 좋아요를 클릭하셨습니다.");
+            return response;
+
+        } catch (Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
         }
 
         return response;
