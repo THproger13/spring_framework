@@ -34,7 +34,7 @@ public class LikeRepository {
     public Long findById(Long boardId) {
         Map<String, Object> params = new HashMap<>();
         params.put("boardId", boardId);
-        //params.put("loginEmail", loginEmail);
+//        params.put("loginEmail", loginEmail);
         return sql.selectOne("Like.findById", params);
     }
 }
