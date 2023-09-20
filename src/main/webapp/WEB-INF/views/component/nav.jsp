@@ -8,21 +8,29 @@
         crossorigin="anonymous"></script>
 <style>
     .navbar {
-        background-color: rgba(255, 255, 255, 0.9); /* Use rgba for transparency */
-        backdrop-filter: blur(5px); /* Apply a blur effect to the background */
-        border-radius: 10px; /* Add some border radius for rounded corners */
-        padding: 10px; /* Add padding for spacing */
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+        background-color: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(5px);
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        display: flex; /* 네비게이션 바를 가로로 나열합니다. */
+        justify-content: center; /* 네비게이션 바를 수평 가운데로 정렬합니다. */
+        width: 100vw; /* 네비게이션 바의 폭을 브라우저 창의 전체 너비와 같도록 설정합니다. */
     }
 
     .menu {
         list-style-type: none;
         padding: 0;
+        display: flex; /* 메뉴 항목들을 가로로 나열합니다. */
+        justify-content: center; /* 메뉴 항목들을 수평 가운데 정렬합니다. */
+        width: 100%; /* 메뉴의 폭을 브라우저 창의 전체 폭과 일치하도록 설정합니다. */
     }
 
     .menu-item {
         display: inline-block;
-        margin-right: 10px;
+        margin: 0 10px; /* 링크들 사이의 좌우 마진을 설정합니다. */
+        text-align: center; /* 텍스트를 중앙 정렬합니다. */
+        /*margin-right: 10px;*/
     }
 </style>
 
