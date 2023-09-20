@@ -4,23 +4,12 @@
 
 <mapper namespace="Like">
     <insert id="save" parameterType="java.util.Map">
-        insert into like_table(boardId, isClicked)
-        values (#{boardId}, #{isClicked})
+        insert into like_table(boardId, loginEmail)
+        values (#{boardId}, #{loginEmail})
     </insert>
-    <update id="update" parameterType="java.util.Map">
-        update like_table set  isClicked=#{isClicked} where boardid=#{boardid}
-    </update>
 
-    <update id="upLike" parameterType="Long">
-        update like_table set likeCount=likeCount+1, isClicked=true where boardId = #{boardId}
-    </update>
-    <update id="downLike" parameterType="Long">
-        update like_table set likeCount=likeCount-1, isClicked=false where boardId = #{boardId}
-    </update>
-
-    <select id="findById" parameterType="Long" resultType="Long">
-        select likeCount from like_table where boardId = #{boardId}
+    <select id="findById" parameterType="java.util.Map" resultType="like">
+        select * from like_table where boardId = #{boardId} and loginEmail=#{loginEmail}
     </select>
-
-
 </mapper>
+

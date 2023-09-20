@@ -62,4 +62,18 @@ public class BoardRepository {
     public void update(BoardDTO boardDTO) {
         sql.update("Board.update", boardDTO);
     }
+
+    public void upLikeHits(Long boardId) {
+        sql.update("Board.upLikeHits", boardId);
+    }
+
+    public void downLikeHits(Long boardId) {
+        sql.update("Board.downLikeHits", boardId);
+    }
+
+    public Long getLikeHits(Long boardId) {
+        return sql.selectOne("Board.getLikeHits", boardId);
+    }
+
+
 }

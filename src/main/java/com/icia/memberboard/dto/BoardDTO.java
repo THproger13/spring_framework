@@ -14,6 +14,7 @@ public class BoardDTO extends MemberDTO {
     private String boardWriter;
     private String boardContents;
     private int boardHits;
+    private Long LikeHits;
     private String createdAt;
     private int fileAttached;
     private List<MultipartFile> boardFile;

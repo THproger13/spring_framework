@@ -139,4 +139,5 @@ public class BoardController {
         return "redirect:/board?boardId=" + boardDTO.getBoardId();
     }
 
+
 }

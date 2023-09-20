@@ -195,4 +195,30 @@ private BoardRepository boardRepository;
             }
         }
     }
+
+    public void upLikeHits(Long boardId) {
+        try {
+            boardRepository.upLikeHits(boardId);
+        }catch (Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
+        }
+    }
+
+    public void downLikeHits(Long boardId) {
+        try {
+            boardRepository.downLikeHits(boardId);
+        }catch (Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            System.out.println("e = " + e);
+        }
+    }
+
+    public Long getLikeHits(Long boardId) {
+        return boardRepository.getLikeHits(boardId);
+    }
+
+
 }

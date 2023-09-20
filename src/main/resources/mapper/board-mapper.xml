@@ -58,4 +58,17 @@
         where boardId=#{boardId}
     </update>
 
+
+    <update id="upLikeHits" parameterType="Long">
+        update board_table1 set likeHits = likeHits + 1 where boardId=#{boardId}
+    </update>
+
+    <update id="downLikeHits" parameterType="Long">
+        update board_table1 set likeHits = likeHits - 1 where boardId=#{boardId}
+    </update>
+
+    <select id="getLikeHits" parameterType="long" resultType="Long">
+        select likeHits from board_table1 where boardId=#{boardId}
+    </select>
+
 </mapper>

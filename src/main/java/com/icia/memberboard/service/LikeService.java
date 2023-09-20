@@ -10,8 +10,8 @@ public class LikeService {
     @Autowired
     private LikeRepository likeRepository;
 
-    public void save(Long boardId, boolean isClicked) {
-        likeRepository.save(boardId, isClicked);
+    public void save(Long boardId, String loginEmail) {
+        likeRepository.save(boardId, loginEmail);
     }
     public void update(Long boardId, boolean isClicked) {
         likeRepository.update(boardId, isClicked);
@@ -23,8 +23,8 @@ public class LikeService {
     public void downLike(Long boardId) {
         likeRepository.downLike(boardId);
     }
-    public Long findById(Long boardId) {
-        return likeRepository.findById(boardId);
+    public LikeDTO findById(Long boardId, String loginEmail) {
+        return likeRepository.findById(boardId, loginEmail);
     }
 
 }

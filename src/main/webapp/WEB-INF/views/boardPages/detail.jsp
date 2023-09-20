@@ -156,20 +156,24 @@
   let likeCount = document.querySelector("#likeCount");
   const boardId = "${board.boardId}";
 
-  // let isClicked = false;
+  let isClicked = false;
 
 likeBtn.addEventListener("click", () => {
   $.ajax({
-    url: "/Like/like",
+    url: "/like/like",
     type: "POST",
-    data: {boardId: boardId},
+    data: {boardId: boardId,
+          isClicked : isClicked},
     success: function (res) {
       if (res.success) {
-        likeCount.textContent = res.likeCount;
+        likeHits.textContent = res.likeHits;
         likeIcon.innerHTML = res.isClicked ? `<i class="fas fa-thumbs-up"></i>` : `<i class="far fa-thumbs-up"></i>`;
-        // } else {
-        //   alert(res.message);
-        // }
+        if(res.isClicked === true) {
+          isClicked = true;
+        }else {
+          isClicked = false;
+
+        }
       }
     },
     error: function (error) {
@@ -179,8 +183,6 @@ likeBtn.addEventListener("click", () => {
   });
 });
 //좋아요 버튼 동작 정의 끝
-
-
 const page = '${page}';
   const type = '${type}';
   const q = '${q}';

@@ -13,11 +13,10 @@ public class LikeRepository {
     @Autowired
     private SqlSessionTemplate sql;
 
-    public void save(Long boardId, boolean isClicked) {
+    public void save(Long boardId, String loginEmail) {
         Map<String, Object> params = new HashMap<>();
         params.put("boardId", boardId);
-        //params.put("loginEmail", loginEmail);
-        params.put("isClicked", isClicked);
+        params.put("loginEmail", loginEmail);
         sql.insert("Like.save", params);
     }
 
@@ -31,10 +30,10 @@ public class LikeRepository {
     public void update(Long boardId, boolean isClicked) {
         sql.update("Like.update", isClicked);
     }
-    public Long findById(Long boardId) {
+    public LikeDTO findById(Long boardId, String loginEmail) {
         Map<String, Object> params = new HashMap<>();
         params.put("boardId", boardId);
-//        params.put("loginEmail", loginEmail);
+        params.put("loginEmail", loginEmail);
         return sql.selectOne("Like.findById", params);
     }
 }
