@@ -67,7 +67,7 @@
         update board_table1 set likeHits = likeHits - 1 where boardId=#{boardId}
     </update>
 
-    <select id="getLikeHits" parameterType="long" resultType="Long">
+    <select id="getLikeHits" parameterType="Long" resultType="Long">
         select likeHits from board_table1 where boardId=#{boardId}
     </select>
 

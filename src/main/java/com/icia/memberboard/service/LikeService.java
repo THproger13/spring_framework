@@ -5,6 +5,8 @@ import com.icia.memberboard.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LikeService {
     @Autowired
@@ -17,13 +19,7 @@ public class LikeService {
         likeRepository.update(boardId, isClicked);
     }
 
-    public void upLike(Long boardId) {
-        likeRepository.upLike(boardId);
-    }
-    public void downLike(Long boardId) {
-        likeRepository.downLike(boardId);
-    }
-    public LikeDTO findById(Long boardId, String loginEmail) {
+    public List<LikeDTO> findById(Long boardId, String loginEmail) {
         return likeRepository.findById(boardId, loginEmail);
     }
 

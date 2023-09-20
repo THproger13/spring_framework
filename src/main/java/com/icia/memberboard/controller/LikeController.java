@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -24,46 +25,31 @@ public class LikeController {
     @PostMapping("/like")
     @ResponseBody
     public Map<String, Object> like(@RequestParam Long boardId,
-                                @RequestParam boolean isClicked,
+                                    @RequestParam boolean isClicked,
                                     HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         try {
             String loginEmail = (String) session.getAttribute("loginEmail");
+            List<LikeDTO> likeDTOList = likeService.findById(boardId, loginEmail);
 
-            // DB에서 현재 loginEmail과 boardId에 해당하는 레코드를 찾음.
-            LikeDTO likeDTO = likeService.findById(boardId, loginEmail);
-
-            if (likeDTO == null && isClicked == false ) {
-                // 좋아요를 처음 누르는 경우
-                likeService.save(boardId, loginEmail); // DB에 추가
-                boardService.upLikeHits(boardId); // likeCount 증가
-                Long likeHits = boardService.getLikeHits(boardId);
-                System.out.println(likeHits);
-                response.put("success", true);
-                response.put("likeHits", likeHits);
-                response.put("isClicked", true);
-            } else if (likeDTO != null && isClicked == false) {
-                //좋아요를 누르지 않은 경우
-                boardService.upLikeHits(boardId);   // likeCount 증가
-                Long likeHits = boardService.getLikeHits(boardId);
-                System.out.println(likeHits);
-                response.put("success", true);
-                response.put("likeHits", likeHits);
+            if (likeDTOList == null || !isClicked) {  // 조건을 합침.
+                likeService.save(boardId, loginEmail);
+                boardService.upLikeHits(boardId);
                 response.put("isClicked", true);
             } else {
-                // 좋아요를 눌러놓은 경우
-                // isClicked를 true로 설정
-                boardService.downLikeHits(boardId); // likeCount 감소
-                Long likeHits = boardService.getLikeHits(boardId);
-                System.out.println(likeHits);
-                response.put("success", true);
-                response.put("likeHits", likeHits);
+                boardService.downLikeHits(boardId);
                 response.put("isClicked", false);
             }
+
+            Long likeCount = boardService.getLikeHits(boardId);
+            response.put("success", true);
+            response.put("likeCount", likeCount);
+
+            System.out.println("like method called with boardId: " + boardId + ", isClicked: " + isClicked);
         } catch (Exception e) {
-            e.getCause();
             e.printStackTrace();
-            System.out.println("e = " + e);
+            response.put("success", false);
+            response.put("message", "Internal Server Error");
         }
         return response;
     }

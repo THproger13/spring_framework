@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -20,20 +21,14 @@ public class LikeRepository {
         sql.insert("Like.save", params);
     }
 
-    public void upLike(Long boardId) {
-        sql.update("Like.upLike", boardId);
-    }
-    public void downLike(Long boardId) {
-        sql.update("Like.downLike", boardId);
-    }
 
     public void update(Long boardId, boolean isClicked) {
         sql.update("Like.update", isClicked);
     }
-    public LikeDTO findById(Long boardId, String loginEmail) {
+    public List<LikeDTO> findById(Long boardId, String loginEmail) {
         Map<String, Object> params = new HashMap<>();
         params.put("boardId", boardId);
         params.put("loginEmail", loginEmail);
-        return sql.selectOne("Like.findById", params);
+        return sql.selectList("Like.findById", params);
     }
 }
