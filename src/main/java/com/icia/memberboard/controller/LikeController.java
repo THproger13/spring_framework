@@ -25,27 +25,25 @@ public class LikeController {
     @PostMapping("/like")
     @ResponseBody
     public Map<String, Object> like(@RequestParam Long boardId,
-                                    @RequestParam boolean isClicked,
                                     HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         try {
             String loginEmail = (String) session.getAttribute("loginEmail");
-            List<LikeDTO> likeDTOList = likeService.findById(boardId, loginEmail);
-
-            if (likeDTOList == null || !isClicked) {  // 조건을 합침.
-                likeService.save(boardId, loginEmail);
-                boardService.upLikeHits(boardId);
-                response.put("isClicked", true);
-            } else {
+//            List<LikeDTO> likeDTOList = likeService.findByIdAndEmail(boardId, loginEmail);
+            boolean isLiked = likeService.toggleIsLiked(boardId, loginEmail);
+            if (isLiked) {  // 조건을 합침.
                 boardService.downLikeHits(boardId);
-                response.put("isClicked", false);
+                response.put("isLiked", false);
+            } else {
+                boardService.upLikeHits(boardId);
+                response.put("isLiked", true);
             }
 
             Long likeCount = boardService.getLikeHits(boardId);
             response.put("success", true);
             response.put("likeCount", likeCount);
 
-            System.out.println("like method called with boardId: " + boardId + ", isClicked: " + isClicked);
+            System.out.println("like method called with boardId: " + boardId + ", isLiked: " + isLiked);
         } catch (Exception e) {
             e.printStackTrace();
             response.put("success", false);

@@ -25,10 +25,24 @@ public class LikeRepository {
     public void update(Long boardId, boolean isClicked) {
         sql.update("Like.update", isClicked);
     }
-    public List<LikeDTO> findById(Long boardId, String loginEmail) {
+    public List<LikeDTO> findByIdAndEmail(Long boardId, String loginEmail) {
         Map<String, Object> params = new HashMap<>();
         params.put("boardId", boardId);
         params.put("loginEmail", loginEmail);
-        return sql.selectList("Like.findById", params);
+        return sql.selectList("Like.findByIdAndEmail", params);
+    }
+
+    public boolean getIsLiked(Long boardId, String loginEmail) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardId", boardId);
+        params.put("loginEmail", loginEmail);
+        return sql.selectOne("Like.getIsLiked",params);
+    }
+
+    public void delete(Long boardId, String loginEmail) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardId", boardId);
+        params.put("loginEmail", loginEmail);
+        sql.delete("Like.delete", params);
     }
 }

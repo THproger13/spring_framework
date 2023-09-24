@@ -155,30 +155,30 @@
   let likeIcon = document.querySelector("#icon");
   let likeCount = document.querySelector("#likeCount");
   const boardId = likeBtn.dataset.boardId;
-  let isClicked = false;
 
 likeBtn.addEventListener("click", () => {
   $.ajax({
     url: "/Like/like",
     type: "POST",
-    data: {boardId: boardId,
-          isClicked : isClicked},
+    data: {boardId: boardId},
     success: function (res) {
+      let isLiked;
       if (res.success) {
+        isLiked = res.isLiked;
         likeCount.textContent = res.likeCount;
-        likeIcon.innerHTML = res.isClicked ? `<i class="fas fa-thumbs-up"></i>` : `<i class="far fa-thumbs-up"></i>`;
-        if(res.isClicked === true) {
-          isClicked = true;
+        // likeIcon.innerHTML = res.isLiked ? `` : ``;
+        if(isLiked) {
+          likeIcon.innerHTML = `<i class="fas fa-thumbs-up"></i>`;
           console.log("좋아요 하는 상태로 변경하는 응답 객체");
           console.log("boardId" + boardId);
-          console.log("isClicked" + isClicked);
+          console.log("isLiked" + isLiked);
           console.log("likeCount" + likeCount);
 
         }else {
-          isClicked = false;
+          likeIcon.innerHTML = `<i class="far fa-thumbs-up"></i>`;
           console.log("좋아요 취소 하는 상태로 변경하는 응답 객체");
           console.log("boardId" + boardId);
-          console.log("isClicked" + isClicked);
+          console.log("isLiked" + isLiked);
           console.log("likeCount" + likeCount);
         }
       }

@@ -19,8 +19,21 @@ public class LikeService {
         likeRepository.update(boardId, isClicked);
     }
 
-    public List<LikeDTO> findById(Long boardId, String loginEmail) {
-        return likeRepository.findById(boardId, loginEmail);
+    public List<LikeDTO> findByIdAndEmail(Long boardId, String loginEmail) {
+        return likeRepository.findByIdAndEmail(boardId, loginEmail);
     }
 
+    public boolean getIsLiked(Long boardId, String loginEmail) {
+        return likeRepository.getIsLiked(boardId, loginEmail);
+    }
+
+    public boolean toggleIsLiked(Long boardId, String loginEmail) {
+        if(findByIdAndEmail(boardId, loginEmail) != null) {
+            likeRepository.delete(boardId, loginEmail);
+            return true;
+        }else{
+            likeRepository.save(boardId, loginEmail);
+            return false;
+        }
+    }
 }

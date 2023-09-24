@@ -8,8 +8,14 @@
         values (#{boardId}, #{loginEmail})
     </insert>
 
-    <select id="findById" parameterType="java.util.Map" resultType="like">
+    <select id="findByIdAndEmail" parameterType="java.util.Map" resultType="like">
         select * from like_table where boardId = #{boardId} and loginEmail=#{loginEmail}
     </select>
+
+    <delete id="delete" parameterType="java.util.Map">
+        delete from like_table where boardId=#{boardId} and loginEmail=#{loginEmail}
+    </delete>
+
+
 </mapper>
 
