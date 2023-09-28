@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Board">
+
+    <insert id="save" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
+        insert into board_table1(boardWriter, boardWriterId, boardTitle, boardContents, fileAttached)
+        values (#{boardWriter}, #{boardWriterId}, #{boardTitle}, #{boardContents}, #{fileAttached})
+    </insert>
+
+    <insert id="saveFile" parameterType="boardFile">
+        insert into board_file_table1(originalFileName, storedFileName, boardId)
+        values (#{originalFileName}, #{storedFileName}, #{boardId})
+    </insert>
+
+    <select id="search" parameterType="HashMap" resultType="board">
+        select boardId, boardWriter, boardTitle, date_format(createdAt, "%y-%m-%d %H:%i%s") as createdAt, boardHits
+        from board_table1 where ${type} Like CONCAT('%',#{q},'%') order by boardId desc
+            limit #{start}, #{limit}
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(boardId) from board_table1;
+    </select>
+
+    <select id="pagingList" parameterType="java.util.HashMap" resultType="board">
+        select boardId, boardWriter, boardTitle, date_format(createdAt, "%y-%m-%d %H:%i%s") as createdAt, boardHits from board_table1
+        order by boardId desc limit #{start}, #{limit}
+    </select>
+
+    <select id="searchCount" parameterType="map" resultType="Integer">
+        select count(boardId) as count from board_table1 where ${type} Like CONCAT('%',#{q},'%')
+    </select>
+
+    <update id="upHits" parameterType="Long">
+        update board_table1 set boardHits=boardHits+1 where boardId = #{boardId}
+    </update>
+
+    <select id="findById" parameterType="Long" resultType="board">
+        select * from board_table1 where boardId = #{boardId}
+    </select>
+
+    <select id="findFile" parameterType="Long" resultType="boardFile">
+        select * from board_file_table1 where boardId = #{boardId}
+    </select>
+
+    <delete id="delete" parameterType="Long">
+        delete from board_table1 where boardId = #{boardId}
+    </delete>
+
+    <delete id="deleteBoardFile" parameterType="boardFile">
+        delete from board_file_table1 where boardFileId=#{boardFileId} and storedFileName=#{storedFileName}
+    </delete>
+
+    <update id="update" parameterType="board">
+        update board_table1 set boardWriter=#{boardWriter}, boardTitle=#{boardTitle}, boardContents=#{boardContents}, fileAttached=#{fileAttached}
+        where boardId=#{boardId}
+    </update>
+
+
+    <update id="upLikeHits" parameterType="Long">
+        update board_table1 set likeHits = likeHits + 1 where boardId=#{boardId}
+    </update>
+
+    <update id="downLikeHits" parameterType="Long">
+        update board_table1 set likeHits = likeHits - 1 where boardId=#{boardId}
+    </update>
+
+    <select id="getLikeHits" parameterType="Long" resultType="Long">
+        select likeHits from board_table1 where boardId=#{boardId}
+    </select>
+
+</mapper>

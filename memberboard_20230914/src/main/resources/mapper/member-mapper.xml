@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 반드시 작성! -->
+<mapper namespace="Member">
+    <insert id="save" parameterType="member" useGeneratedKeys="true" keyProperty="memberId">
+        insert into member_table1(memberEmail, memberPassword, memberName, memberMobile, memberProfileAttached)
+        values (#{memberEmail}, #{memberPassword}, #{memberName}, #{memberMobile}, #{memberProfileAttached})
+    </insert>
+
+    <insert id="saveProfile" parameterType="memberProfile">
+        insert into member_profile_table1(originalProfileName, storedProfileName, memberId)
+        values (#{originalProfileName}, #{storedProfileName}, #{memberId})
+    </insert>
+
+    <select id ="findAll" resultType="member">
+        select * from member_table1
+    </select>
+
+    <select id="findByEmail" parameterType="String" resultType="member">
+        select * from member_table1 where memberEmail=#{memberEmail}
+    </select>
+
+    <select id = "findById" parameterType="Long" resultType="member">
+        select * from member_table1 where memberId=#{memberId}
+    </select>
+
+    <select id="findMemberProfile" parameterType="Long" resultType="memberProfile">
+        select * from member_profile_table where memberId=#{id}
+    </select>
+
+    <select id="login" parameterType="member" resultType="member">
+        select * from member_table1 where memberEmail=#{memberEmail} and memberPassword=#{memberPassword}
+    </select>
+
+    <delete id ="delete" parameterType="Long">
+        delete from member_table1 where memberId=#{memberId}
+    </delete>
+
+    <update id="update" parameterType="member">
+        update member_table1 set memberEmail = #{memberEmail}, memberMobile = #{memberMobile} where memberId=#{memberId}
+    </update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
