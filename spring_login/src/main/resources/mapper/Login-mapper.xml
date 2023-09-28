@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 반드시 작성! -->
+<mapper namespace="Login">
+    <insert id="save" parameterType="login">
+        insert into member(email, password)
+        values(#{email}, #{password})
+    </insert>
+
+    <select id="findAll" resultType="login">
+        select * from member
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="login">
+        select * from member where id=#{id}
+    </select>
+</mapper>
