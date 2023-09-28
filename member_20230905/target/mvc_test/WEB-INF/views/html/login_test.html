@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 페이지</title>
+
+  <style>
+    body {
+      /* make the body fits our viewport */
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #wrap-texture{
+      position: relative;
+    }
+
+    #canvas {
+      /* make the canvas wrapper fits the document */
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .plane {
+      /* define the size of your plane */
+      width: 100%;
+      height: 100vh;
+    }
+
+    .plane img {
+      /* hide the img element */
+      display: none;
+    }
+
+    .login-container {
+      position: absolute;
+      height: 400px;
+      width: 400px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.7); /* 흑백톤 배경 */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-bottom: 1px solid #333; /* 입력 필드 밑줄 */
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-bottom: 2px solid #007bff; /* 입력 필드에 포커스 시 밑줄 색상 변경 */
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff; /* 로그인 버튼 배경 색상 */
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease; /* 호버 시 배경 색상 전환 효과 */
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3; /* 호버 시 배경 색상 변경 */
+    }
+  </style>
+
+
+</head>
+<body>
+<!--<%@include file="component/header.jsp"%>-->
+<!--<%@include file="component/nav.jsp"%>-->
+<h2>Sign In</h2>
+<!--background-animation-->
+<div id="wrap-texture">
+  <!-- div that will hold our WebGL canvas -->
+  <div id="canvas">
+
+  <!-- div used to create our plane -->
+  <div class="plane">
+
+
+    <!-- images that will be used as textures by our plane -->
+    <img data-sampler="dispImage" id="texture" src="https://images.unsplash.com/Ys-DBJeX0nE.JPG?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ" crossorigin="anonymous"/>
+  </div>
+</div>
+</div>
+<!--background-animation-->
+
+
+<div class="login-container">
+<form class="dropdown-item-text" action="/memberLogin" method="post" onsubmit="return is_empty_login_info()">
+  <input class="form-control" placeholder="Email" type="text" name="memberEmail" id="memberEmail"> <br>
+  <input class="form-control" placeholder="Password" type="password" name="memberPassword" id="memberPassword"> <br>
+  <input type="submit" value="로그인">
+</form>
+</div>
+<!--<%@include file="component/footer.jsp"%>-->
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const is_empty_login_info = () => {
+    const loginEmail = document.getElementById("memberEmail").value;
+    const loginPass = document.getElementById("memberPassword").value;
+
+    if (loginEmail === '' || loginPass === '') {
+      alert("입력하지 않은 로그인 정보가 있습니다!");
+      if (loginEmail === '') {
+        $('#memberEmail').focus();
+      } else if (loginPass === '') {
+        $('#memberPassword').focus();
+      }
+      return false;
+    }
+    return true;
+  }
+  window.onload = () => {
+    const shader = {
+      vertex: `
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
+
+    // those are the mandatory attributes that the lib sets
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+
+    // those are mandatory uniforms that the lib sets and that contain our model view and projection matrix
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    uniform mat4 dispImageMatrix;
+
+    // if you want to pass your vertex and texture coords to the fragment shader
+    varying vec3 vVertexPosition;
+    varying vec2 vTextureCoord;
+
+    void main() {
+        vec3 vertexPosition = aVertexPosition;
+        gl_Position = uPMatrix * uMVMatrix * vec4(vertexPosition, 1.0);
+
+        // set the varyings
+        vTextureCoord = (dispImageMatrix * vec4(aTextureCoord, 0., 1.)).xy;
+        vVertexPosition = vertexPosition;
+    }`,
+      fragment: `
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
+
+    #define PI2 6.28318530718
+    #define PI 3.14159265359
+    #define S(a,b,n) smoothstep(a,b,n)
+
+    // get our varyings
+    varying vec3 vVertexPosition;
+    varying vec2 vTextureCoord;
+
+    // the uniform we declared inside our javascript
+    uniform float uTime;
+    uniform vec2 uReso;
+    uniform vec2 uMouse;
+
+    // our texture sampler (default name, to use a different name please refer to the documentation)
+    uniform sampler2D dispImage;
+    uniform sampler2D blurImage;
+
+    // Noise
+    float N12(vec2 p){
+      p = fract(p * vec2(123.34, 345.45));
+      p += dot(p, p + 34.345);
+
+      return fract(p.x * p.y);
+    }
+
+    vec3 Layer(vec2 uv0, float t){
+
+      vec2 asp = vec2(2., 1.);
+
+      vec2 uv1 = uv0 * 3. * asp;
+
+      uv1.y += t * .25;
+
+      vec2 gv = fract(uv1) - .5;
+      vec2 id = floor(uv1);
+
+      float n = N12(id);
+
+      t+= n * PI2;
+
+      float w = uv0.y * 10.;
+      float x = (n - .5) * .8;
+      x += (.4 - abs(x)) * sin(3. * w) * pow(sin(w), 6.) * .45;
+      float y = -sin(t + sin(t + sin(t) * .5)) * (.5 - .06);
+      y -= (gv.x - x) * (gv.x - x); // sesgar;
+
+      vec2 dropPos = (gv - vec2(x, y)) / asp;
+      float drop = S(.03, .02, length(dropPos));
+
+      vec2 trailPos = (gv - vec2(x, t * .25)) / asp;
+      trailPos.y = (fract(trailPos.y * 8.) - .5) / 8.;
+      float trail = S(.02, .015, length(trailPos));
+
+      float fogTrail = S(-.05, .05, dropPos.y);
+
+      fogTrail *= S(.5, y, gv.y);
+      trail *= fogTrail;
+      fogTrail *= S(.03, .015, abs(dropPos.x));
+
+      vec2 off = drop * dropPos + trail * trailPos;
+
+      return vec3(off, fogTrail);
+    }
+
+    void main() {
+          float dist = 5.;
+          float blurSize = 5.;
+          float t = mod(uTime * .03, 7200.);
+
+          vec4 c = vec4(0);
+          vec2 uv = vTextureCoord;
+
+          vec3 drops = Layer(uv, t);
+          drops += Layer(uv * 1.25 + 7.54, t);
+          drops += Layer(uv * 1.35 + 1.54, t);
+          drops += Layer(uv * 1.57 - 7.54, t);
+
+          float blur = blurSize * 7. * (1. - drops.z);
+
+          vec4 col = vec4(0.);
+          int numSamples = 32;
+          float a = N12(uv) * PI2;
+
+          blur *= .0005;
+          uv += drops.xy * dist;
+
+          for(int n = 0; n < 32; n++){
+            vec2 off = vec2(sin(a), cos(a)) * blur;
+            float d = fract(sin((float(n) + 1.) * 546.) * 5424.);
+            d = sqrt(d);
+            off *= d;
+            col += texture2D(dispImage, uv + off);
+            a++;
+          }
+
+          col /= float(numSamples);
+
+          gl_FragColor = col;
+    }
+    `
+    };
+
+    // get our canvas wrapper
+    const canvasContainer = document.getElementById("canvas");
+    const mouse = {
+      x: 0,
+      y: 0
+    };
+    const canvas = document.getElementById("canvas");
+    gl = canvas.getContext("webgl");
+
+    gl.getExtension("OES_standard_derivatives").loseContext();
+
+    // set up our WebGL context and append the canvas to our wrapper
+    const webGLCurtain = new Curtains({container: "canvas"});
+
+    //webGLCurtain.glContext.getExtension('OES_standard_derivatives');
+
+    // get our plane element
+    const planeElement = document.getElementsByClassName("plane")[0];
+
+    // set our initial parameters (basic uniforms)
+    const params = {
+      vertexShader: shader.vertex, // our vertex shader ID
+      fragmentShader: shader.fragment, // our framgent shader ID
+      widthSegments: 40,
+      heightSegments: 40, // we now have 40*40*6 = 9600 vertices !
+      uniforms: {
+        time: {
+          name: "uTime", // uniform name that will be passed to our shaders
+          type: "1f", // this means our uniform is a float
+          value: 0
+        },
+        mousepos: {
+          name: "uMouse",
+          type: "2f",
+          value: [mouse.x, mouse.y]
+        },
+        resolution: {
+          name: "uReso",
+          type: "2f",
+          value: [innerWidth, innerHeight]
+        }
+      }
+    };
+
+    // create our plane mesh
+    const plane = webGLCurtain.addPlane(planeElement, params);
+
+    // use the onRender method of our plane fired at each requestAnimationFrame call
+    plane.onRender(() => {
+      plane.uniforms.time.value++; // update our time uniform value
+
+      plane.uniforms.resolution.value = [innerWidth, innerHeight];
+    });
+
+    canvasContainer.addEventListener("mousemove", ({ clientX, clientY }) => {
+      mouse.x = clientX;
+      mouse.y = clientY;
+
+      plane.uniforms.mousepos.value = [mouse.x, mouse.y];
+    });
+  };
+
+</script>
+</html>

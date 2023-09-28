@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--아래의 매퍼 태그안에서 특정 sql문을 작성할때는 dml의 종류에 따라 적합한 파라미터를 받아와야만
+ 한다. 이후 mapper.xml의 안에서 받아온 파라미터를 사용할때는 '#{파라미터 이름}'의 형식을 사용해
+ 원하는 파라미터들을 sql문 내부에서 참조해 사용한다.
+-->
+<!-- namespace 반드시 작성! -->
+<mapper namespace="Member">
+    <insert id="save" parameterType="member">
+        insert into member_table(memberEmail, memberPassword, memberName, memberBirth, memberMobile)
+        values(#{memberEmail}, #{memberPassword}, #{memberName}, #{memberBirth}, #{memberMobile})
+    </insert>
+
+    <select id ="list" resultType="member">
+        select * from member_table
+    </select>
+
+    <select id="findByEmail" parameterType="String" resultType="member">
+        SELECT * FROM member_table WHERE memberEmail = #{memberEmail}
+    </select>
+
+    <update id="update" parameterType="member">
+        UPDATE member_table
+        SET memberEmail=#{memberEmail},
+            memberPassword=#{memberPassword},
+            memberName=#{memberName},
+            memberBirth=#{memberBirth},
+            memberMobile=#{memberMobile}
+        WHERE id=#{id}
+    </update>
+
+    <select id="getMemberById" parameterType="Long" resultType="member">
+        SELECT * FROM member_table WHERE id = #{id}
+    </select>
+
+    <select id="checkEmail" parameterType="String" resultType="String">
+        SELECT memberEmail FROM member_table WHERE memberEmail = #{memberEmail}
+    </select>
+
+</mapper>
